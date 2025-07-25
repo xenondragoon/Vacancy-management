@@ -1,0 +1,131 @@
+.signup-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  font-family: Arial, sans-serif;
+}
+
+.signup-card {
+  width: 360px;
+  background: #fff;
+  padding: 40px 30px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+.signup-card h1 {
+  margin-bottom: 4px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.signup-card .subtitle {
+  margin-bottom: 20px;
+  color: #555;
+  font-size: 14px;
+}
+
+.signup-form input[type="text"],
+.signup-form input[type="email"],
+.signup-form input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  outline: none;
+  font-size: 14px;
+  background: transparent;
+}
+
+.signup-button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #1976d2;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.signup-button:hover {
+  background-color: #155fa0;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.remember-me input {
+  margin-right: 6px;
+}
+
+.divider {
+  margin: 25px 0 15px;
+  position: relative;
+  text-align: center;
+  font-size: 12px;
+  color: #888;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  height: 1px;
+  background: #ccc;
+  position: absolute;
+  top: 50%;
+  width: 40%;
+}
+
+.divider::before {
+  left: 0;
+}
+
+.divider::after {
+  right: 0;
+}
+
+.quick-access {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.quick-access button {
+  flex: 1;
+  margin: 0 5px;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.quick-access button:hover {
+  background-color: #f0f0f0;
+}
+
+.signin-link {
+  font-size: 13px;
+  color: #444;
+}
+
+.signin-link a {
+  color: #1976d2;
+  text-decoration: none;
+}
+
+.signin-link a:hover {
+  text-decoration: underline;
+}
