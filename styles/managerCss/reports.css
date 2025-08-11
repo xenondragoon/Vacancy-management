@@ -1,0 +1,75 @@
+.manager-reports-header {
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: #1e293b;
+  margin-bottom: 24px;
+}
+
+.manager-reports-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.manager-reports-metric-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+  padding: 24px 16px;
+  min-width: 180px;
+  flex: 1;
+  text-align: center;
+}
+
+.manager-reports-metric-title {
+  font-size: 1.1rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.manager-reports-metric-value {
+  font-size: 2.2rem;
+  color: #2563eb;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.manager-reports-charts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.manager-reports-chart {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+  padding: 24px 16px;
+  flex: 1 1 350px;
+  min-width: 300px;
+  min-height: 220px;
+  text-align: center;
+}
+
+.manager-reports-export-btns {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.manager-reports-export-btn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.manager-reports-export-btn:hover {
+  background: #1749b1;
+} 

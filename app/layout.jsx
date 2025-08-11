@@ -1,15 +1,17 @@
-import '../styles/globals.css';
-import Navbar from '../components/Navbar';
-import ThemeToggle from '../components/ThemeToggle';
+// import { Inter } from 'next/font/google'
+import '../styles/globals.css'
+
+// const inter = Inter({ subsets: ['latin'] })
+
+export const metadata = {
+  title: 'Vacancy Management System',
+  description: 'A comprehensive vacancy management system',
+}
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
-        <Navbar />
-        <ThemeToggle />
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
-  );
-}
+  )
+} 

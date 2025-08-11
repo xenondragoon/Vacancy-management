@@ -1,0 +1,116 @@
+.interview-scheduler-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 32px 16px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.is-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 24px;
+  color: #1a202c;
+}
+
+.is-calendar-view {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+  padding: 20px;
+  margin-bottom: 32px;
+}
+
+.is-slots-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+  margin-bottom: 32px;
+}
+
+.is-slots-table th, .is-slots-table td {
+  padding: 12px 10px;
+  text-align: left;
+}
+
+.is-slots-table th {
+  background: #f0f0f0;
+  font-weight: 600;
+  color: #333;
+}
+
+.is-slots-table tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.is-status-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.9em;
+  font-weight: 500;
+  color: #fff;
+}
+.is-status-tag.scheduled {
+  background: #2563eb;
+}
+.is-status-tag.completed {
+  background: #16a34a;
+}
+.is-status-tag.rescheduled {
+  background: #f59e42;
+}
+
+.is-form-section {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+  padding: 24px 16px;
+  margin-bottom: 24px;
+}
+
+.is-form-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #222;
+}
+
+.is-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.is-form input,
+.is-form select,
+.is-form textarea {
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  flex: 1 1 200px;
+}
+
+.is-form textarea {
+  min-height: 40px;
+  resize: vertical;
+}
+
+.is-form-btn {
+  background: #2563eb;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 8px;
+}
+.is-form-btn:hover {
+  background: #1749b1;
+} 

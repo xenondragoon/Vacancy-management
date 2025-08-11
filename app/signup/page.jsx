@@ -1,11 +1,11 @@
-
 "use client"
+
 import Link from "next/link"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { signup } from "../../lib/auth"
 import { getDashboardPath } from "../../lib/roles"
-import "../../styles/signup.css" // Ensure this path is correct
+import "../../styles/signup.css"
 
 export default function SignupPage() {
   const [name, setName] = useState("")
@@ -16,13 +16,14 @@ export default function SignupPage() {
   const [error, setError] = useState("")
   const router = useRouter()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    const result = signup(name, password, role)
+
+    const result = await signup(name, email, password, role)
     if (result.success) {
-      router.push(getDashboardPath(role))
+      router.push(getDashboardPath(result.role))
     } else {
-      setError(result.message || "Signup failed")
+      setError(result.message || "An error occurred during signup")
     }
   }
 
@@ -79,10 +80,12 @@ export default function SignupPage() {
             <button type="button">SSO</button>
           </div>
 
-          {error && <div style={{ color: "red", marginTop: "8px" }}>{error}</div>}
+          {error && (
+            <div style={{ color: "red", marginTop: "8px" }}>{error}</div>
+          )}
 
           <p className="signin-link">
-            Already have an account? <a href="/login">Sign in</a>
+            Already have an account? <Link href="/login">Sign in</Link>
           </p>
         </form>
       </div>

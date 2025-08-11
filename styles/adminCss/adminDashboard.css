@@ -1,0 +1,129 @@
+.admin-dashboard-overview {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 1024px) {
+  .admin-dashboard-overview {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.admin-dashboard-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #1a202c;
+}
+
+.admin-overview-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.admin-overview-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  padding: 24px 16px;
+  min-width: 180px;
+  flex: 1;
+  text-align: center;
+}
+
+.admin-overview-card-title {
+  font-size: 1.1rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.admin-overview-card-value {
+  font-size: 2.2rem;
+  color: #2563eb;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.admin-applications-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+  margin-bottom: 24px;
+}
+
+.admin-applications-table th, .admin-applications-table td {
+  padding: 12px 10px;
+  text-align: left;
+}
+
+.admin-applications-table th {
+  background: #f0f0f0;
+  font-weight: 600;
+  color: #333;
+}
+
+.admin-applications-table tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.admin-status-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.9em;
+  font-weight: 500;
+  color: #fff;
+}
+.admin-status-tag.new {
+  background: #2563eb;
+}
+.admin-status-tag.shortlisted {
+  background: #16a34a;
+}
+.admin-status-tag.pending {
+  background: #f59e42;
+  color: #fff;
+}
+
+.admin-app-action {
+  background: none;
+  border: none;
+  color: #2563eb;
+  cursor: pointer;
+  font-size: 0.97rem;
+  padding: 0 4px;
+}
+
+.admin-notifications-panel {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+  padding: 24px 16px;
+  height: fit-content;
+}
+
+.admin-notifications-title {
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 12px;
+}
+
+.admin-notification-item {
+  font-size: 0.98rem;
+  color: #374151;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.admin-notification-dot {
+  color: #2563eb;
+  font-size: 1.2em;
+  margin-top: 2px;
+} 

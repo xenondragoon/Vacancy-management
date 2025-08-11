@@ -1,0 +1,80 @@
+.applicant-dashboard-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 32px 16px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  min-height: 100vh;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.applicant-dashboard-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1a202c;
+  margin-bottom: 10px;
+}
+
+.applicant-dashboard-welcome {
+  font-size: 1.2rem;
+  color: #374151;
+  margin-bottom: 28px;
+}
+
+.applicant-overview-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.applicant-overview-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+  padding: 24px 16px;
+  min-width: 180px;
+  flex: 1;
+  text-align: center;
+}
+
+.applicant-overview-card-title {
+  font-size: 1.1rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.applicant-overview-card-value {
+  font-size: 2.2rem;
+  color: #2563eb;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.applicant-activity-feed {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+  padding: 24px 16px;
+}
+
+.applicant-activity-title {
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 12px;
+}
+
+.applicant-activity-item {
+  font-size: 0.98rem;
+  color: #374151;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.applicant-activity-dot {
+  color: #2563eb;
+  font-size: 1.2em;
+  margin-top: 2px;
+} 

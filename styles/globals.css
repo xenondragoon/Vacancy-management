@@ -32,18 +32,7 @@ button:hover {
   background: #0070f3;
   color: #fff;
 }
-.navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem 2rem;
-  background: #fff;
-  border-bottom: 1px solid #eee;
-}
-body.dark .navbar {
-  background: #222;
-  border-bottom: 1px solid #333;
-}
+/* Navbar styles moved to NavBar.css to avoid conflicts */
 .navbar-logo {
   display: flex;
   align-items: center;

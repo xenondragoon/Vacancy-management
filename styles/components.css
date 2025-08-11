@@ -1,0 +1,189 @@
+/* Page Header Component */
+.page-header {
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.page-header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #6b7280;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.breadcrumb-item:hover {
+  color: #3b82f6;
+}
+
+.breadcrumb-item.current {
+  color: #374151;
+  font-weight: 500;
+}
+
+.breadcrumb-separator {
+  display: flex;
+  align-items: center;
+  color: #d1d5db;
+}
+
+.page-title-section {
+  margin-top: 0.5rem;
+}
+
+.page-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
+}
+
+.page-subtitle {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Dark mode support */
+body.dark .page-header {
+  background: #1f2937;
+  border-bottom-color: #374151;
+}
+
+body.dark .page-title {
+  color: #f9fafb;
+}
+
+body.dark .page-subtitle {
+  color: #9ca3af;
+}
+
+body.dark .breadcrumb-item {
+  color: #9ca3af;
+}
+
+body.dark .breadcrumb-item:hover {
+  color: #60a5fa;
+}
+
+body.dark .breadcrumb-item.current {
+  color: #f3f4f6;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .page-header {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .page-title {
+    font-size: 1.5rem;
+  }
+  
+  .page-breadcrumbs {
+    font-size: 0.75rem;
+  }
+}
+
+/* Loading states */
+.page-header.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Animation for page transitions */
+.page-header {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading Spinner Component */
+.loading-spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  min-height: 200px;
+}
+
+.loading-spinner {
+  position: relative;
+  display: inline-block;
+}
+
+.spinner-ring {
+  width: 100%;
+  height: 100%;
+  border: 3px solid #e5e7eb;
+  border-top: 3px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-text {
+  margin-top: 1rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Dark mode support for loading spinner */
+body.dark .spinner-ring {
+  border-color: #374151;
+  border-top-color: #60a5fa;
+}
+
+body.dark .loading-text {
+  color: #9ca3af;
+}
+
+/* RoleGuard loading state */
+.role-guard-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #f7f7f7;
+}
+
+body.dark .role-guard-loading {
+  background: #181818;
+}
+
+ 

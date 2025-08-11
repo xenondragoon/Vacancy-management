@@ -1,18 +1,13 @@
-import Link from 'next/link';
+"use client"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
-export default function HomePage() {
-  return (
-    <main style={{ padding: '2rem', textAlign: 'center' }}>
-      <h1>Welcome to Vacancy Management</h1>
-      <p>Streamline your hiring process with our modern vacancy management platform.</p>
-      <div style={{ marginTop: '2rem' }}>
-        <Link href="/login">
-          <button>Login</button>
-        </Link>
-        <Link href="/signup">
-          <button>Signup</button>
-        </Link>
-      </div>
-    </main>
-  );
+export default function Home() {
+  const router = useRouter()
+
+  useEffect(() => {
+    router.replace("/login")
+  }, [router])
+
+  return null
 }

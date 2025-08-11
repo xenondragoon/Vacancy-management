@@ -1,0 +1,245 @@
+/* Manage Job Posts Styles */
+.manage-job-posts-container {
+  padding: 2rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.mjp-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 1rem;
+}
+
+.mjp-controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.mjp-search {
+  flex: 1;
+  min-width: 250px;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  background: #fff;
+  transition: border-color 0.2s ease;
+}
+
+.mjp-search:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.mjp-select {
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  background: #fff;
+  min-width: 150px;
+  cursor: pointer;
+}
+
+.mjp-create-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.mjp-create-btn:hover {
+  background: #2563eb;
+}
+
+.mjp-table-wrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.mjp-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.mjp-table th {
+  background: #f9fafb;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.875rem;
+}
+
+.mjp-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+.mjp-table tr:hover {
+  background: #f9fafb;
+}
+
+.mjp-status-tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mjp-status-tag.open {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.mjp-status-tag.closed {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.mjp-action {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  margin-right: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.mjp-action:hover {
+  background: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+.mjp-action.edit {
+  background: #dbeafe;
+  color: #1e40af;
+  border-color: #93c5fd;
+}
+
+.mjp-action.edit:hover {
+  background: #bfdbfe;
+}
+
+.mjp-action.archive {
+  background: #fef3c7;
+  color: #92400e;
+  border-color: #fcd34d;
+}
+
+.mjp-action.archive:hover {
+  background: #fde68a;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .manage-job-posts-container {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .mjp-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .mjp-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+  
+  .mjp-search {
+    min-width: auto;
+  }
+  
+  .mjp-select {
+    min-width: auto;
+  }
+  
+  .mjp-table th,
+  .mjp-table td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.8rem;
+  }
+  
+  .mjp-action {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.7rem;
+    margin-right: 0.25rem;
+  }
+}
+
+/* Dark mode support */
+body.dark .manage-job-posts-container {
+  background: #1f2937;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+body.dark .mjp-title {
+  color: #f9fafb;
+  border-bottom-color: #374151;
+}
+
+body.dark .mjp-search,
+body.dark .mjp-select {
+  background: #374151;
+  border-color: #4b5563;
+  color: #f9fafb;
+}
+
+body.dark .mjp-search:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+}
+
+body.dark .mjp-table th {
+  background: #374151;
+  color: #f9fafb;
+  border-bottom-color: #4b5563;
+}
+
+body.dark .mjp-table td {
+  color: #f3f4f6;
+  border-bottom-color: #374151;
+}
+
+body.dark .mjp-table tr:hover {
+  background: #374151;
+}
+
+body.dark .mjp-action {
+  background: #4b5563;
+  color: #f3f4f6;
+  border-color: #6b7280;
+}
+
+body.dark .mjp-action:hover {
+  background: #6b7280;
+} 

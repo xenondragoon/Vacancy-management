@@ -8,19 +8,29 @@ import { getDashboardPath } from "../../lib/roles"
 import "../../styles/login.css"
 
 export default function LoginPage() {
-  const [username, setUsername] = useState("")
+  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    const result = login(username, password)
-    if (result.success) {
-      router.push(getDashboardPath(result.role))
-    } else {
-      setError("Invalid credentials")
+    setIsLoading(true)
+    setError("")
+    
+    try {
+      const result = await login(email, password)
+      if (result.success) {
+        router.push(getDashboardPath(result.role))
+      } else {
+        setError(result.message || "Invalid credentials")
+      }
+    } catch (err) {
+      setError("An error occurred during login")
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -29,16 +39,16 @@ export default function LoginPage() {
       <div className="login-card">
         <h1>Log in</h1>
         <p style={{ marginTop: "1rem" }}>
-          Don't have an account? <a href="/signup">Create one</a>
+          Don't have an account? <Link href="/signup">Create one</Link>
         </p>
 
         <form className="login-form" onSubmit={handleSubmit}>
-          <label htmlFor="username">Username or Email</label>
+          <label htmlFor="email">Email</label>
           <input
-            id="username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
 
@@ -69,8 +79,8 @@ export default function LoginPage() {
             <label htmlFor="remember">Keep me logged in</label>
           </div>
 
-          <button type="submit" className="login-button">
-            Log in
+          <button type="submit" className="login-button" disabled={isLoading}>
+            {isLoading ? "Logging in..." : "Log in"}
           </button>
         </form>
 

@@ -1,0 +1,136 @@
+.manager-job-listings-header {
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: #1e293b;
+  margin-bottom: 24px;
+}
+
+.manager-job-listings-table-wrapper {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+  overflow-x: auto;
+  margin-bottom: 32px;
+}
+
+.manager-job-listings-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.manager-job-listings-table th, .manager-job-listings-table td {
+  padding: 12px 10px;
+  text-align: left;
+}
+
+.manager-job-listings-table th {
+  background: #f0f0f0;
+  font-weight: 600;
+  color: #333;
+}
+
+.manager-job-listings-table tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.manager-job-status-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.9em;
+  font-weight: 500;
+  color: #fff;
+}
+.manager-job-status-tag.open {
+  background: #16a34a;
+}
+.manager-job-status-tag.closed {
+  background: #6b7280;
+}
+
+.manager-job-action {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 16px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-right: 8px;
+}
+.manager-job-action:last-child {
+  margin-right: 0;
+}
+.manager-job-action.edit {
+  background: #f59e42;
+  color: #fff;
+}
+.manager-job-action.archive {
+  background: #dc2626;
+  color: #fff;
+}
+
+.manager-job-create-btn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-bottom: 24px;
+}
+.manager-job-create-btn:hover {
+  background: #1749b1;
+}
+
+.manager-job-form-modal {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 32px 24px;
+  max-width: 500px;
+  margin: 40px auto;
+}
+.manager-job-form-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 18px;
+  color: #222;
+}
+.manager-job-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.manager-job-form input,
+.manager-job-form select,
+.manager-job-form textarea {
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+.manager-job-form textarea {
+  min-height: 40px;
+  resize: vertical;
+}
+.manager-job-form-btn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 8px;
+}
+.manager-job-form-btn:hover {
+  background: #1749b1;
+} 
