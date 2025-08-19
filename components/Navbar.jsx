@@ -34,7 +34,7 @@ export default function Navbar({ onSidebarToggle, sidebarOpen, isMobile }) {
               e.target.style.display = "none";
             }}
           />
-          <span className="logo-text">CompanyName</span>
+          <span className="logo-text">Time Software</span>
         </Link>
       </div>
       <div className="navbar-right">

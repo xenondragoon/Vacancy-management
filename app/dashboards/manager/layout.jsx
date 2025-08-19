@@ -2,7 +2,6 @@
 import DashboardLayout from "../layout";
 import RoleGuard from "../../../components/RoleGuard";
 import { ROLES } from "../../../lib/roles";
-import "../../../styles/managerCss/managerLayout.css";
 
 export default function ManagerLayout({ children }) {
   return (

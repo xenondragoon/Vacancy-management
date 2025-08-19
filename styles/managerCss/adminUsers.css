@@ -1,118 +1,358 @@
-.manager-admin-users-header {
-  font-size: 1.7rem;
-  font-weight: bold;
-  color: #1e293b;
-  margin-bottom: 24px;
+/* Manager Admin Users Styles */
+.admin-users-container {
+  padding: 2rem;
+  background: var(--background-secondary);
+  min-height: 100vh;
 }
 
-.manager-admin-users-table-wrapper {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+.admin-users-header {
+  margin-bottom: 2rem;
+}
+
+.admin-users-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.admin-users-subtitle {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+.admin-users-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.admin-users-stat-card {
+  background: var(--background-primary);
+  border-radius: var(--border-radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.admin-users-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.admin-users-stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.admin-users-stat-label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.admin-users-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.admin-users-search {
+  flex: 1;
+  min-width: 300px;
+  position: relative;
+}
+
+.admin-users-search-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  background: var(--background-primary);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.admin-users-search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.admin-users-search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  width: 1rem;
+  height: 1rem;
+}
+
+.admin-users-filters {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.admin-users-filter-select {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  background: var(--background-primary);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  min-width: 150px;
+}
+
+.admin-users-filter-select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.admin-users-add-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-users-add-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.admin-users-table {
+  background: var(--background-primary);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+
+.admin-users-table-header {
+  background: var(--background-secondary);
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.admin-users-table-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.admin-users-table-content {
   overflow-x: auto;
-  margin-bottom: 32px;
 }
 
-.manager-admin-users-table {
+.admin-users-table table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.manager-admin-users-table th, .manager-admin-users-table td {
-  padding: 12px 10px;
+.admin-users-table th {
+  background: var(--background-secondary);
+  padding: 1rem 1.5rem;
   text-align: left;
-}
-
-.manager-admin-users-table th {
-  background: #f0f0f0;
   font-weight: 600;
-  color: #333;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
 }
 
-.manager-admin-users-table tr:nth-child(even) {
-  background: #fafafa;
+.admin-users-table td {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
 }
 
-.manager-admin-status-tag {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 0.9em;
-  font-weight: 500;
-  color: #fff;
-}
-.manager-admin-status-tag.active {
-  background: #16a34a;
-}
-.manager-admin-status-tag.disabled {
-  background: #6b7280;
+.admin-users-table tr:hover {
+  background: var(--background-secondary);
 }
 
-.manager-admin-action {
-  background: #2563eb;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 7px 16px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s;
-  margin-right: 8px;
-}
-.manager-admin-action:last-child {
-  margin-right: 0;
-}
-.manager-admin-action.promote {
-  background: #f59e42;
-  color: #fff;
-}
-.manager-admin-action.remove {
-  background: #dc2626;
-  color: #fff;
-}
-.manager-admin-action.reassign {
-  background: #0ea5e9;
-  color: #fff;
-}
-
-.manager-admin-modal {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  padding: 32px 24px;
-  max-width: 500px;
-  margin: 40px auto;
-}
-.manager-admin-modal-title {
-  font-size: 1.2rem;
+.admin-users-role {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--border-radius-full);
+  font-size: 0.75rem;
   font-weight: 600;
-  margin-bottom: 18px;
-  color: #222;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
-.manager-admin-modal-form {
+
+.admin-users-role.admin {
+  background: var(--danger-light);
+  color: var(--danger);
+}
+
+.admin-users-role.manager {
+  background: var(--warning-light);
+  color: var(--warning);
+}
+
+.admin-users-role.applicant {
+  background: var(--info-light);
+  color: var(--info);
+}
+
+.admin-users-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--border-radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.admin-users-status.active {
+  background: var(--success-light);
+  color: var(--success);
+}
+
+.admin-users-status.inactive {
+  background: var(--danger-light);
+  color: var(--danger);
+}
+
+.admin-users-actions {
   display: flex;
-  flex-direction: column;
-  gap: 14px;
+  gap: 0.5rem;
+  align-items: center;
 }
-.manager-admin-modal-form select {
-  padding: 8px 12px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-}
-.manager-admin-modal-btn {
-  background: #2563eb;
-  color: #fff;
+
+.admin-users-action-btn {
+  padding: 0.5rem;
   border: none;
-  border-radius: 6px;
-  padding: 10px 20px;
-  font-size: 1rem;
-  font-weight: 500;
+  border-radius: var(--border-radius-sm);
   cursor: pointer;
-  transition: background 0.2s;
-  margin-top: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
 }
-.manager-admin-modal-btn:hover {
-  background: #1749b1;
-} 
+
+.admin-users-action-btn.edit {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.admin-users-action-btn.edit:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.admin-users-action-btn.delete {
+  background: var(--danger-light);
+  color: var(--danger);
+}
+
+.admin-users-action-btn.delete:hover {
+  background: var(--danger);
+  color: white;
+}
+
+.admin-users-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+  gap: 0.5rem;
+}
+
+.admin-users-pagination-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color);
+  background: var(--background-primary);
+  color: var(--text-primary);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-users-pagination-btn:hover {
+  background: var(--background-secondary);
+  border-color: var(--primary);
+}
+
+.admin-users-pagination-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.admin-users-pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Dark mode styles */
+html.dark .admin-users-container {
+  background: var(--background-secondary-dark) !important;
+}
+
+html.dark .admin-users-stat-card,
+html.dark .admin-users-table,
+html.dark .admin-users-table-header {
+  background: var(--background-primary-dark) !important;
+  border-color: var(--border-color-dark) !important;
+}
+
+html.dark .admin-users-stat-card:hover {
+  box-shadow: var(--shadow-md-dark) !important;
+}
+
+html.dark .admin-users-search-input,
+html.dark .admin-users-filter-select {
+  background: var(--background-primary-dark) !important;
+  border-color: var(--border-color-dark) !important;
+  color: var(--text-primary-dark) !important;
+}
+
+html.dark .admin-users-table th {
+  background: var(--background-secondary-dark) !important;
+  border-color: var(--border-color-dark) !important;
+  color: var(--text-primary-dark) !important;
+}
+
+html.dark .admin-users-table td {
+  border-color: var(--border-color-dark) !important;
+  color: var(--text-primary-dark) !important;
+}
+
+html.dark .admin-users-table tr:hover {
+  background: var(--background-secondary-dark) !important;
+}
+
+html.dark .admin-users-pagination-btn {
+  background: var(--background-primary-dark) !important;
+  border-color: var(--border-color-dark) !important;
+  color: var(--text-primary-dark) !important;
+}
+
+html.dark .admin-users-pagination-btn:hover {
+  background: var(--background-secondary-dark) !important;
+}

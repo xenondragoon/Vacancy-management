@@ -1,136 +1,337 @@
-.manager-job-listings-header {
-  font-size: 1.7rem;
-  font-weight: bold;
-  color: #1e293b;
-  margin-bottom: 24px;
+/* Manager Job Listings Styles */
+.job-listings-container {
+  padding: 2rem;
+  background: var(--background-secondary);
+  min-height: 100vh;
 }
 
-.manager-job-listings-table-wrapper {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+.job-listings-header {
+  margin-bottom: 2rem;
+}
+
+.job-listings-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.job-listings-subtitle {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+.job-listings-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.job-listings-stat-card {
+  background: var(--background-primary);
+  border-radius: var(--border-radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.job-listings-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.job-listings-stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.job-listings-stat-label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.job-listings-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.job-listings-search {
+  flex: 1;
+  min-width: 300px;
+  position: relative;
+}
+
+.job-listings-search-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  background: var(--background-primary);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.job-listings-search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.job-listings-search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  width: 1rem;
+  height: 1rem;
+}
+
+.job-listings-filters {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.job-listings-filter-select {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  background: var(--background-primary);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  min-width: 150px;
+}
+
+.job-listings-filter-select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.job-listings-add-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.job-listings-add-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.job-listings-table {
+  background: var(--background-primary);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+
+.job-listings-table-header {
+  background: var(--background-secondary);
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.job-listings-table-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.job-listings-table-content {
   overflow-x: auto;
-  margin-bottom: 32px;
 }
 
-.manager-job-listings-table {
+.job-listings-table table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.manager-job-listings-table th, .manager-job-listings-table td {
-  padding: 12px 10px;
+.job-listings-table th {
+  background: var(--background-secondary);
+  padding: 1rem 1.5rem;
   text-align: left;
-}
-
-.manager-job-listings-table th {
-  background: #f0f0f0;
   font-weight: 600;
-  color: #333;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
 }
 
-.manager-job-listings-table tr:nth-child(even) {
-  background: #fafafa;
+.job-listings-table td {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
 }
 
-.manager-job-status-tag {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 0.9em;
-  font-weight: 500;
-  color: #fff;
-}
-.manager-job-status-tag.open {
-  background: #16a34a;
-}
-.manager-job-status-tag.closed {
-  background: #6b7280;
+.job-listings-table tr:hover {
+  background: var(--background-secondary);
 }
 
-.manager-job-action {
-  background: #2563eb;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 7px 16px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s;
-  margin-right: 8px;
-}
-.manager-job-action:last-child {
-  margin-right: 0;
-}
-.manager-job-action.edit {
-  background: #f59e42;
-  color: #fff;
-}
-.manager-job-action.archive {
-  background: #dc2626;
-  color: #fff;
-}
-
-.manager-job-create-btn {
-  background: #2563eb;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 10px 20px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s;
-  margin-bottom: 24px;
-}
-.manager-job-create-btn:hover {
-  background: #1749b1;
-}
-
-.manager-job-form-modal {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  padding: 32px 24px;
-  max-width: 500px;
-  margin: 40px auto;
-}
-.manager-job-form-title {
-  font-size: 1.2rem;
+.job-listings-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--border-radius-full);
+  font-size: 0.75rem;
   font-weight: 600;
-  margin-bottom: 18px;
-  color: #222;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
-.manager-job-form {
+
+.job-listings-status.active {
+  background: var(--success-light);
+  color: var(--success);
+}
+
+.job-listings-status.draft {
+  background: var(--warning-light);
+  color: var(--warning);
+}
+
+.job-listings-status.closed {
+  background: var(--danger-light);
+  color: var(--danger);
+}
+
+.job-listings-actions {
   display: flex;
-  flex-direction: column;
-  gap: 14px;
+  gap: 0.5rem;
+  align-items: center;
 }
-.manager-job-form input,
-.manager-job-form select,
-.manager-job-form textarea {
-  padding: 8px 12px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-}
-.manager-job-form textarea {
-  min-height: 40px;
-  resize: vertical;
-}
-.manager-job-form-btn {
-  background: #2563eb;
-  color: #fff;
+
+.job-listings-action-btn {
+  padding: 0.5rem;
   border: none;
-  border-radius: 6px;
-  padding: 10px 20px;
-  font-size: 1rem;
-  font-weight: 500;
+  border-radius: var(--border-radius-sm);
   cursor: pointer;
-  transition: background 0.2s;
-  margin-top: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
 }
-.manager-job-form-btn:hover {
-  background: #1749b1;
-} 
+
+.job-listings-action-btn.edit {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.job-listings-action-btn.edit:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.job-listings-action-btn.delete {
+  background: var(--danger-light);
+  color: var(--danger);
+}
+
+.job-listings-action-btn.delete:hover {
+  background: var(--danger);
+  color: white;
+}
+
+.job-listings-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+  gap: 0.5rem;
+}
+
+.job-listings-pagination-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color);
+  background: var(--background-primary);
+  color: var(--text-primary);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.job-listings-pagination-btn:hover {
+  background: var(--background-secondary);
+  border-color: var(--primary);
+}
+
+.job-listings-pagination-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.job-listings-pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Dark mode styles */
+html.dark .job-listings-container {
+  background: var(--background-secondary-dark) !important;
+}
+
+html.dark .job-listings-stat-card,
+html.dark .job-listings-table,
+html.dark .job-listings-table-header {
+  background: var(--background-primary-dark) !important;
+  border-color: var(--border-color-dark) !important;
+}
+
+html.dark .job-listings-stat-card:hover {
+  box-shadow: var(--shadow-md-dark) !important;
+}
+
+html.dark .job-listings-search-input,
+html.dark .job-listings-filter-select {
+  background: var(--background-primary-dark) !important;
+  border-color: var(--border-color-dark) !important;
+  color: var(--text-primary-dark) !important;
+}
+
+html.dark .job-listings-table th {
+  background: var(--background-secondary-dark) !important;
+  border-color: var(--border-color-dark) !important;
+  color: var(--text-primary-dark) !important;
+}
+
+html.dark .job-listings-table td {
+  border-color: var(--border-color-dark) !important;
+  color: var(--text-primary-dark) !important;
+}
+
+html.dark .job-listings-table tr:hover {
+  background: var(--background-secondary-dark) !important;
+}
+
+html.dark .job-listings-pagination-btn {
+  background: var(--background-primary-dark) !important;
+  border-color: var(--border-color-dark) !important;
+  color: var(--text-primary-dark) !important;
+}
+
+html.dark .job-listings-pagination-btn:hover {
+  background: var(--background-secondary-dark) !important;
+}

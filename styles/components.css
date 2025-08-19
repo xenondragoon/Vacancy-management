@@ -1,10 +1,10 @@
 /* Page Header Component */
 .page-header {
-  background: #fff;
-  border-bottom: 1px solid #e5e7eb;
-  padding: 1.5rem 2rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background: var(--background-primary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 1.25rem 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-sm);
 }
 
 .page-header-content {
@@ -50,45 +50,27 @@
 }
 
 .page-title {
-  font-size: 1.875rem;
+  font-size: 1.75rem;
   font-weight: 700;
-  color: #111827;
-  margin: 0 0 0.5rem 0;
+  color: var(--text-primary);
+  margin: 0 0 0.25rem 0;
   line-height: 1.2;
 }
 
 .page-subtitle {
   font-size: 1rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   margin: 0;
   line-height: 1.5;
 }
 
 /* Dark mode support */
-body.dark .page-header {
-  background: #1f2937;
-  border-bottom-color: #374151;
-}
-
-body.dark .page-title {
-  color: #f9fafb;
-}
-
-body.dark .page-subtitle {
-  color: #9ca3af;
-}
-
-body.dark .breadcrumb-item {
-  color: #9ca3af;
-}
-
-body.dark .breadcrumb-item:hover {
-  color: #60a5fa;
-}
-
-body.dark .breadcrumb-item.current {
-  color: #f3f4f6;
-}
+html.dark .page-header { background: var(--background-primary) !important; border-bottom-color: var(--border-color) !important; }
+html.dark .page-title { color: var(--text-primary) !important; }
+html.dark .page-subtitle { color: var(--text-secondary) !important; }
+html.dark .breadcrumb-item { color: var(--text-secondary) !important; }
+html.dark .breadcrumb-item:hover { color: var(--primary-color) !important; }
+html.dark .breadcrumb-item.current { color: var(--text-primary) !important; }
 
 /* Responsive design */
 @media (max-width: 768px) {

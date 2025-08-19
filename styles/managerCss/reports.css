@@ -1,75 +1,339 @@
-.manager-reports-header {
-  font-size: 1.7rem;
-  font-weight: bold;
-  color: #1e293b;
-  margin-bottom: 24px;
+/* Manager Reports Styles */
+.reports-container {
+  padding: 2rem;
+  background: var(--background-secondary);
+  min-height: 100vh;
 }
 
-.manager-reports-metrics {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 32px;
+.reports-header {
+  margin-bottom: 2rem;
 }
 
-.manager-reports-metric-card {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
-  padding: 24px 16px;
-  min-width: 180px;
-  flex: 1;
-  text-align: center;
+.reports-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
 }
 
-.manager-reports-metric-title {
+.reports-subtitle {
+  color: var(--text-secondary);
   font-size: 1.1rem;
-  color: #374151;
-  font-weight: 500;
 }
 
-.manager-reports-metric-value {
-  font-size: 2.2rem;
-  color: #2563eb;
-  font-weight: bold;
-  margin-top: 8px;
-}
-
-.manager-reports-charts {
+.reports-controls {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
   flex-wrap: wrap;
-  gap: 24px;
-  margin-bottom: 32px;
+  gap: 1rem;
 }
 
-.manager-reports-chart {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
-  padding: 24px 16px;
-  flex: 1 1 350px;
-  min-width: 300px;
-  min-height: 220px;
-  text-align: center;
-}
-
-.manager-reports-export-btns {
+.reports-filters {
   display: flex;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 1rem;
+  align-items: center;
 }
 
-.manager-reports-export-btn {
-  background: #2563eb;
-  color: #fff;
+.reports-filter-select {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  background: var(--background-primary);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  min-width: 150px;
+}
+
+.reports-filter-select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.reports-date-picker {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  background: var(--background-primary);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.reports-date-picker:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.reports-generate-btn {
+  background: var(--primary);
+  color: white;
   border: none;
-  border-radius: 6px;
-  padding: 10px 20px;
-  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.reports-generate-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.reports-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.reports-card {
+  background: var(--background-primary);
+  border-radius: var(--border-radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.reports-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.reports-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.reports-card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.reports-card-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--border-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.reports-metric {
+  margin-bottom: 1rem;
+}
+
+.reports-metric-label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.reports-metric-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.reports-metric-change {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+
+.reports-metric-change.positive {
+  color: var(--success);
+}
+
+.reports-metric-change.negative {
+  color: var(--danger);
+}
+
+.reports-metric-change.neutral {
+  color: var(--text-secondary);
+}
+
+.reports-chart-container {
+  background: var(--background-primary);
+  border-radius: var(--border-radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  margin-bottom: 2rem;
+}
+
+.reports-chart-header {
+  margin-bottom: 1.5rem;
+}
+
+.reports-chart-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.reports-chart-placeholder {
+  height: 300px;
+  background: var(--background-secondary);
+  border-radius: var(--border-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 1.125rem;
+  border: 2px dashed var(--border-color);
+}
+
+.reports-table-container {
+  background: var(--background-primary);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+
+.reports-table-header {
+  background: var(--background-secondary);
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.reports-table-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.reports-table-content {
+  overflow-x: auto;
+}
+
+.reports-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.reports-table th {
+  background: var(--background-secondary);
+  padding: 1rem 1.5rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+}
+
+.reports-table td {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.reports-table tr:hover {
+  background: var(--background-secondary);
+}
+
+.reports-export-controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  gap: 1rem;
+}
+
+.reports-export-btn {
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--border-color);
+  background: var(--background-primary);
+  color: var(--text-primary);
+  border-radius: var(--border-radius-md);
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
-.manager-reports-export-btn:hover {
-  background: #1749b1;
-} 
+
+.reports-export-btn:hover {
+  background: var(--background-secondary);
+  border-color: var(--primary);
+}
+
+.reports-export-btn.primary {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.reports-export-btn.primary:hover {
+  background: var(--primary-dark);
+}
+
+/* Dark mode styles */
+html.dark .reports-container {
+  background: var(--background-secondary-dark) !important;
+}
+
+html.dark .reports-card,
+html.dark .reports-chart-container,
+html.dark .reports-table-container,
+html.dark .reports-table-header {
+  background: var(--background-primary-dark) !important;
+  border-color: var(--border-color-dark) !important;
+}
+
+html.dark .reports-card:hover {
+  box-shadow: var(--shadow-md-dark) !important;
+}
+
+html.dark .reports-filter-select,
+html.dark .reports-date-picker {
+  background: var(--background-primary-dark) !important;
+  border-color: var(--border-color-dark) !important;
+  color: var(--text-primary-dark) !important;
+}
+
+html.dark .reports-chart-placeholder {
+  background: var(--background-secondary-dark) !important;
+  border-color: var(--border-color-dark) !important;
+  color: var(--text-secondary-dark) !important;
+}
+
+html.dark .reports-table th {
+  background: var(--background-secondary-dark) !important;
+  border-color: var(--border-color-dark) !important;
+  color: var(--text-primary-dark) !important;
+}
+
+html.dark .reports-table td {
+  border-color: var(--border-color-dark) !important;
+  color: var(--text-primary-dark) !important;
+}
+
+html.dark .reports-table tr:hover {
+  background: var(--background-secondary-dark) !important;
+}
+
+html.dark .reports-export-btn {
+  background: var(--background-primary-dark) !important;
+  border-color: var(--border-color-dark) !important;
+  color: var(--text-primary-dark) !important;
+}
+
+html.dark .reports-export-btn:hover {
+  background: var(--background-secondary-dark) !important;
+}

@@ -1,25 +1,200 @@
-.my-applications-wrapper {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 32px 16px;
-  background: #f9f9f9;
-  border-radius: 8px;
+.my-applications-container {
+  padding: 2rem;
+  background: var(--background-secondary);
   min-height: 100vh;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.my-applications-header {
+  margin-bottom: 2rem;
 }
 
 .my-applications-title {
   font-size: 2rem;
-  font-weight: bold;
-  color: #1a202c;
-  margin-bottom: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.my-applications-table-wrapper {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
-  overflow-x: auto;
+.my-applications-subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Stats Overview */
+.my-applications-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.my-applications-stat-card {
+  background: var(--background-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.my-applications-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-hover));
+}
+
+.my-applications-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.my-applications-stat-card.pending::before {
+  background: linear-gradient(90deg, var(--warning-color), #d97706);
+}
+
+.my-applications-stat-card.shortlisted::before {
+  background: linear-gradient(90deg, var(--success-color), #059669);
+}
+
+.my-applications-stat-card.rejected::before {
+  background: linear-gradient(90deg, var(--error-color), #dc2626);
+}
+
+.my-applications-stat-card.interview::before {
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-hover));
+}
+
+.my-applications-stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+
+.my-applications-stat-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.my-applications-stat-card.pending .my-applications-stat-number {
+  color: var(--warning-color);
+}
+
+.my-applications-stat-card.shortlisted .my-applications-stat-number {
+  color: var(--success-color);
+}
+
+.my-applications-stat-card.rejected .my-applications-stat-number {
+  color: var(--error-color);
+}
+
+.my-applications-stat-card.interview .my-applications-stat-number {
+  color: var(--primary-color);
+}
+
+/* Filters */
+.my-applications-filters {
+  background: var(--background-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.my-applications-filters-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.my-applications-filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.my-applications-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.my-applications-filter-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.my-applications-filter-select {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--background-secondary);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+}
+
+.my-applications-filter-select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgb(99 102 241 / 0.1);
+}
+
+/* Applications List */
+.my-applications-list {
+  background: var(--background-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.my-applications-list-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--background-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.my-applications-list-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.my-applications-count {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 
 .my-applications-table {
@@ -27,56 +202,472 @@
   border-collapse: collapse;
 }
 
-.my-applications-table th, .my-applications-table td {
-  padding: 12px 10px;
-  text-align: left;
-}
-
 .my-applications-table th {
-  background: #f0f0f0;
+  background: var(--background-secondary);
+  padding: 1rem 1.5rem;
+  text-align: left;
   font-weight: 600;
-  color: #333;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.my-applications-table tr:nth-child(even) {
-  background: #fafafa;
+.my-applications-table td {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  vertical-align: middle;
 }
 
-.my-app-status-tag {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 0.9em;
+.my-applications-table tr:hover {
+  background: var(--background-secondary);
+}
+
+.my-applications-table tr:last-child td {
+  border-bottom: none;
+}
+
+.my-applications-job-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.my-applications-job-company {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.my-applications-status {
+  padding: 0.375rem 0.875rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
   font-weight: 500;
-  color: #fff;
-}
-.my-app-status-tag.submitted {
-  background: #2563eb;
-}
-.my-app-status-tag.review {
-  background: #f59e42;
-}
-.my-app-status-tag.interview {
-  background: #16a34a;
-}
-.my-app-status-tag.rejected {
-  background: #dc2626;
-}
-.my-app-status-tag.hired {
-  background: #0ea5e9;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
 }
 
-.my-app-action {
-  background: #2563eb;
-  color: #fff;
+.my-applications-status.pending {
+  background: rgb(245 158 11 / 0.1);
+  color: var(--warning-color);
+}
+
+.my-applications-status.shortlisted {
+  background: rgb(16 185 129 / 0.1);
+  color: var(--success-color);
+}
+
+.my-applications-status.rejected {
+  background: rgb(239 68 68 / 0.1);
+  color: var(--error-color);
+}
+
+.my-applications-status.interview {
+  background: rgb(99 102 241 / 0.1);
+  color: var(--primary-color);
+}
+
+.my-applications-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.my-applications-action-btn {
+  padding: 0.5rem;
+  background: none;
   border: none;
-  border-radius: 6px;
-  padding: 7px 16px;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.my-applications-action-btn:hover {
+  background: var(--background-secondary);
+  color: var(--text-primary);
+  transform: scale(1.1);
+}
+
+.my-applications-action-btn.view {
+  color: var(--primary-color);
+}
+
+.my-applications-action-btn.view:hover {
+  background: rgb(99 102 241 / 0.1);
+}
+
+.my-applications-action-btn.withdraw {
+  color: var(--error-color);
+}
+
+.my-applications-action-btn.withdraw:hover {
+  background: rgb(239 68 68 / 0.1);
+}
+
+/* Application Details Modal */
+.my-applications-modal {
+  background: var(--background-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  max-width: 600px;
+  width: 90vw;
+  max-height: 90vh;
+  overflow: auto;
+}
+
+.my-applications-modal-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--background-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.my-applications-modal-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.my-applications-modal-close {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.my-applications-modal-close:hover {
+  background: var(--background-tertiary);
+  color: var(--text-primary);
+}
+
+.my-applications-modal-body {
+  padding: 1.5rem;
+}
+
+.my-applications-detail-group {
+  margin-bottom: 1.5rem;
+}
+
+.my-applications-detail-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.my-applications-detail-value {
   font-size: 1rem;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.my-applications-detail-value.job-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.my-applications-detail-value.company {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.my-applications-detail-value.description {
+  background: var(--background-secondary);
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  line-height: 1.6;
+}
+
+/* Pagination */
+.my-applications-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.my-applications-pagination-btn {
+  padding: 0.75rem 1rem;
+  background: var(--background-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
 }
-.my-app-action:hover {
-  background: #1749b1;
+
+.my-applications-pagination-btn:hover {
+  background: var(--background-secondary);
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+}
+
+.my-applications-pagination-btn.active {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.my-applications-pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Dark mode styles */
+html.dark .my-applications-container {
+  background: var(--background-secondary) !important;
+}
+
+html.dark .my-applications-title {
+  background: linear-gradient(135deg, #818cf8, #6366f1) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
+html.dark .my-applications-stat-card {
+  background: var(--background-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+html.dark .my-applications-stat-card::before {
+  background: linear-gradient(90deg, #818cf8, #6366f1) !important;
+}
+
+html.dark .my-applications-stat-card.pending::before {
+  background: linear-gradient(90deg, #fbbf24, #f59e0b) !important;
+}
+
+html.dark .my-applications-stat-card.shortlisted::before {
+  background: linear-gradient(90deg, #34d399, #10b981) !important;
+}
+
+html.dark .my-applications-stat-card.rejected::before {
+  background: linear-gradient(90deg, #f87171, #ef4444) !important;
+}
+
+html.dark .my-applications-stat-card.interview::before {
+  background: linear-gradient(90deg, #818cf8, #6366f1) !important;
+}
+
+html.dark .my-applications-stat-number {
+  color: var(--text-primary) !important;
+}
+
+html.dark .my-applications-stat-card.pending .my-applications-stat-number {
+  color: #fbbf24 !important;
+}
+
+html.dark .my-applications-stat-card.shortlisted .my-applications-stat-number {
+  color: #34d399 !important;
+}
+
+html.dark .my-applications-stat-card.rejected .my-applications-stat-number {
+  color: #f87171 !important;
+}
+
+html.dark .my-applications-stat-card.interview .my-applications-stat-number {
+  color: #818cf8 !important;
+}
+
+html.dark .my-applications-filters {
+  background: var(--background-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+html.dark .my-applications-filter-select {
+  background: var(--background-secondary) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+html.dark .my-applications-filter-select:focus {
+  border-color: #818cf8 !important;
+  box-shadow: 0 0 0 3px rgb(129 140 248 / 0.1) !important;
+}
+
+html.dark .my-applications-list {
+  background: var(--background-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+html.dark .my-applications-list-header {
+  background: var(--background-secondary) !important;
+  border-color: var(--border-color) !important;
+}
+
+html.dark .my-applications-table th {
+  background: var(--background-secondary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+html.dark .my-applications-table td {
+  border-color: var(--border-color) !important;
+  color: var(--text-secondary) !important;
+}
+
+html.dark .my-applications-table tr:hover {
+  background: var(--background-secondary) !important;
+}
+
+html.dark .my-applications-job-title {
+  color: var(--text-primary) !important;
+}
+
+html.dark .my-applications-action-btn:hover {
+  background: var(--background-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+html.dark .my-applications-action-btn.view:hover {
+  background: rgb(129 140 248 / 0.1) !important;
+}
+
+html.dark .my-applications-action-btn.withdraw:hover {
+  background: rgb(248 113 113 / 0.1) !important;
+}
+
+html.dark .my-applications-modal {
+  background: var(--background-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+html.dark .my-applications-modal-header {
+  background: var(--background-secondary) !important;
+  border-color: var(--border-color) !important;
+}
+
+html.dark .my-applications-modal-close:hover {
+  background: var(--background-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+html.dark .my-applications-detail-value.description {
+  background: var(--background-secondary) !important;
+  border-color: var(--border-color) !important;
+}
+
+html.dark .my-applications-pagination-btn {
+  background: var(--background-primary) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+html.dark .my-applications-pagination-btn:hover {
+  background: var(--background-secondary) !important;
+  border-color: var(--border-hover) !important;
+}
+
+html.dark .my-applications-pagination-btn.active {
+  background: #818cf8 !important;
+  color: white !important;
+  border-color: #818cf8 !important;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .my-applications-stats {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+  
+  .my-applications-filters-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .my-applications-container {
+    padding: 1rem;
+  }
+  
+  .my-applications-title {
+    font-size: 1.75rem;
+  }
+  
+  .my-applications-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .my-applications-filters-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .my-applications-table th,
+  .my-applications-table td {
+    padding: 0.75rem 1rem;
+  }
+  
+  .my-applications-actions {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .my-applications-container {
+    padding: 0.75rem;
+  }
+  
+  .my-applications-title {
+    font-size: 1.5rem;
+  }
+  
+  .my-applications-filters {
+    padding: 1rem;
+  }
+  
+  .my-applications-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .my-applications-table {
+    font-size: 0.75rem;
+  }
+  
+  .my-applications-table th,
+  .my-applications-table td {
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .my-applications-pagination {
+    flex-wrap: wrap;
+  }
 } 

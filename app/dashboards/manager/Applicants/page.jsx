@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { LoadingSpinner, SkeletonTable } from "../../../../components/LoadingSpinner";
@@ -6,83 +6,69 @@ import { EmptyState } from "../../../../components/EmptyState";
 import { useToastNotifications } from "../../../../components/Toast";
 import { usePerformance } from "../../../../lib/usePerformance";
 import "../../../../styles/adminCss/interviewScheduler.css";
-import "../../../../styles/adminCss/adminLayout.css";
-
-const COMPANY_NAME = "Time Software";
+import "../../../../styles/managerCss/managerLayout.css";
 
 const mockApplicants = [
   {
     id: 1,
-    name: "Alice Johnson",
-    email: "alice.johnson@email.com",
-    jobTitle: "Frontend Developer",
-    company: COMPANY_NAME,
-    status: "New",
-    appliedDate: "2024-01-15",
+    name: "John Doe",
+    email: "john.doe@email.com",
+    phone: "+1 (555) 123-4567",
+    position: "Frontend Developer",
+    status: "Under Review",
+    appliedDate: "2024-01-10",
     experience: "3 years",
     skills: ["React", "JavaScript", "CSS", "HTML"],
-    avatar: "AJ"
+    resume: "john_doe_resume.pdf",
   },
   {
     id: 2,
-    name: "Bob Smith",
-    email: "bob.smith@email.com",
-    jobTitle: "Backend Engineer",
-    company: COMPANY_NAME,
-    status: "Shortlisted",
-    appliedDate: "2024-01-14",
+    name: "Jane Smith",
+    email: "jane.smith@email.com",
+    phone: "+1 (555) 987-6543",
+    position: "Backend Engineer",
+    status: "Interview Scheduled",
+    appliedDate: "2024-01-08",
     experience: "5 years",
     skills: ["Node.js", "Python", "PostgreSQL", "AWS"],
-    avatar: "BS"
+    resume: "jane_smith_resume.pdf",
   },
   {
     id: 3,
-    name: "Carol Lee",
-    email: "carol.lee@email.com",
-    jobTitle: "UI/UX Designer",
-    company: COMPANY_NAME,
-    status: "Interview",
-    appliedDate: "2024-01-13",
-    experience: "4 years",
+    name: "Mike Johnson",
+    email: "mike.johnson@email.com",
+    phone: "+1 (555) 456-7890",
+    position: "UI/UX Designer",
+    status: "Rejected",
+    appliedDate: "2024-01-05",
+    experience: "2 years",
     skills: ["Figma", "Adobe Creative Suite", "User Research"],
-    avatar: "CL"
+    resume: "mike_johnson_resume.pdf",
   },
   {
     id: 4,
-    name: "David Wilson",
-    email: "david.wilson@email.com",
-    jobTitle: "Product Manager",
-    company: COMPANY_NAME,
-    status: "Rejected",
-    appliedDate: "2024-01-12",
-    experience: "6 years",
-    skills: ["Product Strategy", "Agile", "Data Analysis"],
-    avatar: "DW"
+    name: "Sarah Wilson",
+    email: "sarah.wilson@email.com",
+    phone: "+1 (555) 789-0123",
+    position: "Product Manager",
+    status: "Shortlisted",
+    appliedDate: "2024-01-03",
+    experience: "7 years",
+    skills: ["Product Strategy", "Agile", "Data Analysis", "Leadership"],
+    resume: "sarah_wilson_resume.pdf",
   },
   {
     id: 5,
-    name: "Emma Davis",
-    email: "emma.davis@email.com",
-    jobTitle: "Data Analyst",
-    company: COMPANY_NAME,
-    status: "New",
-    appliedDate: "2024-01-11",
-    experience: "2 years",
-    skills: ["Python", "SQL", "Tableau", "Statistics"],
-    avatar: "ED"
-  },
-  {
-    id: 6,
-    name: "Frank Miller",
-    email: "frank.miller@email.com",
-    jobTitle: "DevOps Engineer",
-    company: COMPANY_NAME,
-    status: "Shortlisted",
-    appliedDate: "2024-01-10",
+    name: "David Brown",
+    email: "david.brown@email.com",
+    phone: "+1 (555) 321-6540",
+    position: "Frontend Developer",
+    status: "Under Review",
+    appliedDate: "2024-01-12",
     experience: "4 years",
-    skills: ["Docker", "Kubernetes", "AWS", "CI/CD"],
-    avatar: "FM"
-  }
+    skills: ["Vue.js", "TypeScript", "Sass", "Webpack"],
+    resume: "david_brown_resume.pdf",
+  },
 ];
 
 const getStatusCount = (status) => {
@@ -91,27 +77,31 @@ const getStatusCount = (status) => {
 
 const getStatusClass = (status) => {
   switch (status) {
-    case "New":
+    case "Under Review":
       return "pending";
+    case "Interview Scheduled":
+      return "warning";
     case "Shortlisted":
       return "completed";
-    case "Interview":
-      return "warning";
     case "Rejected":
       return "danger";
+    case "Hired":
+      return "success";
     default:
       return "pending";
   }
 };
 
-export default function ViewApplicants() {
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
-  const [jobFilter, setJobFilter] = useState("");
+export default function Applicants() {
+  const [applicants, setApplicants] = useState(mockApplicants);
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedPosition, setSelectedPosition] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const toast = useToastNotifications();
-  const { metrics, trackInteraction, updateRenderMetrics } = usePerformance("ViewApplicants");
+  const { metrics, trackInteraction, updateRenderMetrics } = usePerformance("Applicants");
 
   // Simulate data loading
   useEffect(() => {
@@ -119,7 +109,7 @@ export default function ViewApplicants() {
       setIsLoading(true);
       try {
         // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1100));
+        await new Promise(resolve => setTimeout(resolve, 950));
         setIsLoading(false);
         updateRenderMetrics(); // Track initial render
         toast.showSuccess("Applicants data loaded successfully");
@@ -135,7 +125,7 @@ export default function ViewApplicants() {
   const handleRefresh = async () => {
     setIsRefreshing(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 600));
+      await new Promise(resolve => setTimeout(resolve, 550));
       updateRenderMetrics(); // Track refresh performance
       toast.showInfo("Applicants data refreshed");
     } catch (error) {
@@ -145,38 +135,75 @@ export default function ViewApplicants() {
     }
   };
 
-  const handleApplicantAction = async (action, applicant) => {
-    trackInteraction('applicant-action');
+  const handleStatusChange = async (applicantId, newStatus) => {
+    trackInteraction('status-change');
     try {
       // Simulate action processing
-      await new Promise(resolve => setTimeout(resolve, 700));
-      toast.showSuccess(`${action} for ${applicant.name} completed successfully`);
+      await new Promise(resolve => setTimeout(resolve, 600));
+      setApplicants(prev =>
+        prev.map(applicant =>
+          applicant.id === applicantId ? { ...applicant, status: newStatus } : applicant
+        )
+      );
+      toast.showSuccess(`Status updated to ${newStatus}`);
     } catch (error) {
-      toast.showError(`Failed to ${action} for ${applicant.name}`);
+      toast.showError("Failed to update status");
     }
   };
 
-  const filteredApplicants = mockApplicants.filter(
-    (applicant) =>
-      applicant.name.toLowerCase().includes(search.toLowerCase()) ||
-      applicant.email.toLowerCase().includes(search.toLowerCase()) ||
-      applicant.jobTitle.toLowerCase().includes(search.toLowerCase()) &&
-      (statusFilter ? applicant.status === statusFilter : true) &&
-      (jobFilter ? applicant.jobTitle === jobFilter : true)
-  );
+  const handleViewResume = async (applicant) => {
+    trackInteraction('view-resume');
+    try {
+      // Simulate action processing
+      await new Promise(resolve => setTimeout(resolve, 400));
+      toast.showInfo(`Viewing resume for ${applicant.name}`);
+    } catch (error) {
+      toast.showError("Failed to view resume");
+    }
+  };
+
+  const handleScheduleInterview = async (applicant) => {
+    trackInteraction('schedule-interview');
+    try {
+      // Simulate action processing
+      await new Promise(resolve => setTimeout(resolve, 700));
+      toast.showSuccess(`Interview scheduled for ${applicant.name}`);
+    } catch (error) {
+      toast.showError("Failed to schedule interview");
+    }
+  };
+
+  const handleSendEmail = async (applicant) => {
+    trackInteraction('send-email');
+    try {
+      // Simulate action processing
+      await new Promise(resolve => setTimeout(resolve, 500));
+      toast.showSuccess(`Email sent to ${applicant.name}`);
+    } catch (error) {
+      toast.showError("Failed to send email");
+    }
+  };
+
+  const filteredApplicants = applicants.filter((applicant) => {
+    const matchesStatus = !selectedStatus || applicant.status === selectedStatus;
+    const matchesPosition = !selectedPosition || applicant.position === selectedPosition;
+    const matchesSearch = applicant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         applicant.email.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesStatus && matchesPosition && matchesSearch;
+  });
 
   // Show loading state
   if (isLoading) {
     return (
       <div className="admin-dashboard">
         <div className="admin-dashboard-header">
-          <h1 className="admin-dashboard-title">View Applicants</h1>
+          <h1 className="admin-dashboard-title">Applicants</h1>
           <p className="admin-dashboard-subtitle">
             Review and manage job applications
           </p>
         </div>
         
-        <SkeletonTable rows={7} columns={8} />
+        <SkeletonTable rows={6} columns={8} />
       </div>
     );
   }
@@ -187,7 +214,7 @@ export default function ViewApplicants() {
       <div className="admin-dashboard-header">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="admin-dashboard-title">View Applicants</h1>
+            <h1 className="admin-dashboard-title">Applicants</h1>
             <p className="admin-dashboard-subtitle">
               Review and manage job applications
             </p>
@@ -213,15 +240,15 @@ export default function ViewApplicants() {
             <div className="admin-stat-title">Total Applicants</div>
             <div className="admin-stat-icon">👥</div>
           </div>
-          <div className="admin-stat-number">{mockApplicants.length}</div>
+          <div className="admin-stat-number">{applicants.length}</div>
           <div className="admin-stat-change positive">+3 this week</div>
         </div>
         <div className="admin-stat-card warning">
           <div className="admin-stat-header">
-            <div className="admin-stat-title">New Applications</div>
-            <div className="admin-stat-icon">🆕</div>
+            <div className="admin-stat-title">Under Review</div>
+            <div className="admin-stat-icon">🔍</div>
           </div>
-          <div className="admin-stat-number">{getStatusCount("New")}</div>
+          <div className="admin-stat-number">{getStatusCount("Under Review")}</div>
           <div className="admin-stat-change positive">+2 today</div>
         </div>
         <div className="admin-stat-card success">
@@ -234,10 +261,10 @@ export default function ViewApplicants() {
         </div>
         <div className="admin-stat-card info">
           <div className="admin-stat-header">
-            <div className="admin-stat-title">In Interview</div>
+            <div className="admin-stat-title">Interview Scheduled</div>
             <div className="admin-stat-icon">📅</div>
           </div>
-          <div className="admin-stat-number">{getStatusCount("Interview")}</div>
+          <div className="admin-stat-number">{getStatusCount("Interview Scheduled")}</div>
           <div className="admin-stat-change neutral">0 changes</div>
         </div>
       </div>
@@ -252,37 +279,36 @@ export default function ViewApplicants() {
             <input
               type="text"
               placeholder="Search applicants..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
               className="is-search-input"
             />
           </div>
           <div className="is-filter-select">
             <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
+              value={selectedStatus}
+              onChange={(e) => setSelectedStatus(e.target.value)}
               className="is-filter-select-input"
             >
               <option value="">All Statuses</option>
-              <option value="New">New</option>
+              <option value="Under Review">Under Review</option>
+              <option value="Interview Scheduled">Interview Scheduled</option>
               <option value="Shortlisted">Shortlisted</option>
-              <option value="Interview">Interview</option>
               <option value="Rejected">Rejected</option>
+              <option value="Hired">Hired</option>
             </select>
           </div>
           <div className="is-filter-select">
             <select
-              value={jobFilter}
-              onChange={(e) => setJobFilter(e.target.value)}
+              value={selectedPosition}
+              onChange={(e) => setSelectedPosition(e.target.value)}
               className="is-filter-select-input"
             >
-              <option value="">All Jobs</option>
+              <option value="">All Positions</option>
               <option value="Frontend Developer">Frontend Developer</option>
               <option value="Backend Engineer">Backend Engineer</option>
               <option value="UI/UX Designer">UI/UX Designer</option>
               <option value="Product Manager">Product Manager</option>
-              <option value="Data Analyst">Data Analyst</option>
-              <option value="DevOps Engineer">DevOps Engineer</option>
             </select>
           </div>
         </div>
@@ -299,20 +325,20 @@ export default function ViewApplicants() {
         
         {filteredApplicants.length === 0 ? (
           <EmptySearchResults
-            searchTerm={search}
+            searchTerm={searchTerm}
             onClearFilters={() => {
-              setSearch("");
-              setStatusFilter("");
-              setJobFilter("");
+              setSearchTerm("");
+              setSelectedStatus("");
+              setSelectedPosition("");
             }}
           />
         ) : (
-          <div className="is-table-container applicants-compact">
+          <div className="is-table-container">
             <table className="is-table">
               <thead className="is-table-header">
                 <tr>
                   <th>Applicant</th>
-                  <th>Job Details</th>
+                  <th>Position</th>
                   <th>Experience</th>
                   <th>Skills</th>
                   <th>Applied Date</th>
@@ -324,33 +350,13 @@ export default function ViewApplicants() {
                 {filteredApplicants.map((applicant) => (
                   <tr key={applicant.id} className="is-table-row">
                     <td>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                        <div style={{ 
-                          width: '40px', 
-                          height: '40px', 
-                          borderRadius: '50%', 
-                          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          color: 'white',
-                          fontWeight: '600',
-                          fontSize: '0.875rem'
-                        }}>
-                          {applicant.avatar}
-                        </div>
-                        <div>
-                          <div className="is-table-cell-primary">{applicant.name}</div>
-                          <div className="is-table-cell-secondary">{applicant.email}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
                       <div>
-                        <div className="is-table-cell-primary">{applicant.jobTitle}</div>
-                        <div className="is-table-cell-secondary">{applicant.company}</div>
+                        <div className="is-table-cell-primary">{applicant.name}</div>
+                        <div className="is-table-cell-secondary">{applicant.email}</div>
+                        <div className="is-table-cell-secondary">{applicant.phone}</div>
                       </div>
                     </td>
+                    <td>{applicant.position}</td>
                     <td>{applicant.experience}</td>
                     <td>
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem' }}>
@@ -384,23 +390,35 @@ export default function ViewApplicants() {
                     <td>
                       <div className="is-action-buttons">
                         <button
-                          onClick={() => handleApplicantAction("view", applicant)}
+                          onClick={() => handleViewResume(applicant)}
                           className="is-button primary small"
                         >
-                          View
+                          Resume
                         </button>
                         <button
-                          onClick={() => handleApplicantAction("shortlist", applicant)}
+                          onClick={() => handleScheduleInterview(applicant)}
                           className="is-button secondary small"
-                        >
-                          Shortlist
-                        </button>
-                        <button
-                          onClick={() => handleApplicantAction("schedule interview", applicant)}
-                          className="is-button warning small"
                         >
                           Interview
                         </button>
+                        <button
+                          onClick={() => handleSendEmail(applicant)}
+                          className="is-button warning small"
+                        >
+                          Email
+                        </button>
+                        <select
+                          value={applicant.status}
+                          onChange={(e) => handleStatusChange(applicant.id, e.target.value)}
+                          className="is-filter-select-input"
+                          style={{ fontSize: '0.75rem', padding: '0.25rem 0.5rem' }}
+                        >
+                          <option value="Under Review">Under Review</option>
+                          <option value="Interview Scheduled">Interview Scheduled</option>
+                          <option value="Shortlisted">Shortlisted</option>
+                          <option value="Rejected">Rejected</option>
+                          <option value="Hired">Hired</option>
+                        </select>
                       </div>
                     </td>
                   </tr>
@@ -451,4 +469,4 @@ export default function ViewApplicants() {
       </div>
     </div>
   );
-} 
+}

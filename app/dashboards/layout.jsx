@@ -24,8 +24,6 @@ export default function DashboardLayout({ children }) {
     return () => window.removeEventListener("resize", checkScreenSize)
   }, [])
 
-
-
   const handleSidebarToggle = () => {
     setSidebarOpen(!sidebarOpen)
   }
@@ -51,8 +49,6 @@ export default function DashboardLayout({ children }) {
       {sidebarOpen && isMobile && (
         <div className="sidebar-overlay open" onClick={handleSidebarClose} />
       )}
-      
-
     </div>
   )
 }

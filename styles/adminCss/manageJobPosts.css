@@ -73,6 +73,60 @@
   border: 1px solid #e5e7eb;
 }
 
+/* Compact table to avoid horizontal scroll */
+.compact-table {
+  overflow-x: hidden !important;
+  /* slightly extend to use more of the page width */
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.compact-table .is-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.compact-table .is-table th,
+.compact-table .is-table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.compact-table .is-table th:nth-child(1),
+.compact-table .is-table td:nth-child(1) { width: 28%; }
+.compact-table .is-table th:nth-child(2),
+.compact-table .is-table td:nth-child(2) { width: 18%; }
+.compact-table .is-table th:nth-child(3),
+.compact-table .is-table td:nth-child(3) { width: 20%; }
+.compact-table .is-table th:nth-child(4),
+.compact-table .is-table td:nth-child(4) { width: 19%; }
+.compact-table .is-table th:nth-child(5),
+.compact-table .is-table td:nth-child(5) { width: 15%; }
+
+/* Ensure Actions column stays wide enough and not clipped */
+.compact-table .is-table th:nth-child(6),
+.compact-table .is-table td:nth-child(6) {
+  width: 140px;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.compact-table .is-table td:nth-child(6) .is-action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.compact-table .is-table td:nth-child(6) .is-button {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
 .mjp-table {
   width: 100%;
   border-collapse: collapse;
