@@ -3,8 +3,10 @@
   padding: 2.5rem;
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   min-height: 100vh;
+
   position: relative;
 }
+
 
 .admin-dashboard::before {
   content: '';
@@ -16,7 +18,11 @@
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   opacity: 0.05;
   z-index: 0;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  white-space: nowrap;
 }
+
 
 .admin-dashboard > * {
   position: relative;
@@ -201,7 +207,9 @@
   border: 1px solid #e2e8f0;
 }
 
-.admin-stat-change.positive {
+.admin-stat-change.wide {
+  width: 100%;
+  max-width: 100%;
   background: #d1fae5;
   border-color: #a7f3d0;
   color: #065f46;
@@ -227,6 +235,8 @@
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   margin-bottom: 3rem;
+  width: 100%;
+  max-width: 100%;
 }
 
 .admin-activity-header {
@@ -755,4 +765,4 @@ html.dark .admin-quick-action:hover .admin-quick-action-description {
 .admin-stat-card:focus-visible {
   outline: 3px solid #667eea;
   outline-offset: 2px;
-} 
+}

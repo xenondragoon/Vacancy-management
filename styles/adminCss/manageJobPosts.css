@@ -94,13 +94,13 @@
 }
 
 .compact-table .is-table th:nth-child(1),
-.compact-table .is-table td:nth-child(1) { width: 28%; }
+.compact-table .is-table td:nth-child(1) { width: 25%; }
 .compact-table .is-table th:nth-child(2),
 .compact-table .is-table td:nth-child(2) { width: 18%; }
 .compact-table .is-table th:nth-child(3),
 .compact-table .is-table td:nth-child(3) { width: 20%; }
 .compact-table .is-table th:nth-child(4),
-.compact-table .is-table td:nth-child(4) { width: 19%; }
+.compact-table .is-table td:nth-child(4) { width: 22%; }
 .compact-table .is-table th:nth-child(5),
 .compact-table .is-table td:nth-child(5) { width: 15%; }
 
