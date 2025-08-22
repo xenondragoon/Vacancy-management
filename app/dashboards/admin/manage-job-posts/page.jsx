@@ -18,7 +18,7 @@ const mockJobs = [
     applicants: 12,
     deadline: "2024-07-15",
     company: COMPANY_NAME,
-    location: "San Francisco, CA",
+    
     type: "Full-time",
     experience: "3-5 years"
   },
@@ -29,7 +29,7 @@ const mockJobs = [
     applicants: 8,
     deadline: "2024-06-30",
     company: COMPANY_NAME,
-    location: "Remote",
+    
     type: "Full-time",
     experience: "5+ years"
   },
@@ -40,7 +40,7 @@ const mockJobs = [
     applicants: 5,
     deadline: "2024-07-20",
     company: COMPANY_NAME,
-    location: "New York, NY",
+    
     type: "Contract",
     experience: "2-4 years"
   },
@@ -51,7 +51,7 @@ const mockJobs = [
     applicants: 15,
     deadline: "2024-08-01",
     company: COMPANY_NAME,
-    location: "Austin, TX",
+    
     type: "Full-time",
     experience: "7+ years"
   },
@@ -62,7 +62,7 @@ const mockJobs = [
     applicants: 0,
     deadline: "2024-08-15",
     company: COMPANY_NAME,
-    location: "Boston, MA",
+    
     type: "Full-time",
     experience: "2-5 years"
   }
@@ -93,7 +93,7 @@ export default function ManageJobPosts() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [jobList, setJobList] = useState(mockJobs);
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [newJob, setNewJob] = useState({ title: "", type: "Full-time", experience: "0-2 years", deadline: "", status: "Open", location: "Remote" });
+  const [newJob, setNewJob] = useState({ title: "", type: "Full-time", experience: "0-2 years", deadline: "", status: "Open" });
   const [viewJob, setViewJob] = useState(null);
   const [editJob, setEditJob] = useState(null);
   const toast = useToastNotifications();
@@ -163,14 +163,14 @@ export default function ManageJobPosts() {
           applicants: 0,
           deadline: newJob.deadline,
           company: COMPANY_NAME,
-          location: newJob.location,
+          
           type: newJob.type,
           experience: newJob.experience,
         };
         return [...prev, created];
       });
       setShowCreateModal(false);
-      setNewJob({ title: "", type: "Full-time", experience: "0-2 years", deadline: "", status: "Open", location: "Remote" });
+      setNewJob({ title: "", type: "Full-time", experience: "0-2 years", deadline: "", status: "Open" });
       toast.showSuccess("New job post created successfully");
     } catch (error) {
       toast.showError("Failed to create job post");
@@ -417,7 +417,7 @@ export default function ManageJobPosts() {
                 <option value="Contract">Contract</option>
                 <option value="Internship">Internship</option>
               </select>
-              <input value={newJob.location} onChange={(e) => setNewJob({ ...newJob, location: e.target.value })} placeholder="Location" className="is-search-input" />
+              
               <input value={newJob.experience} onChange={(e) => setNewJob({ ...newJob, experience: e.target.value })} placeholder="Experience (e.g., 3-5 years)" className="is-search-input" />
               <input value={newJob.deadline} onChange={(e) => setNewJob({ ...newJob, deadline: e.target.value })} placeholder="Deadline (YYYY-MM-DD)" className="is-search-input" />
               <select value={newJob.status} onChange={(e) => setNewJob({ ...newJob, status: e.target.value })} className="is-filter-select-input">
@@ -448,7 +448,7 @@ export default function ManageJobPosts() {
               <div><strong>Type:</strong> {viewJob.type}</div>
               <div><strong>Experience:</strong> {viewJob.experience}</div>
               <div><strong>Deadline:</strong> {viewJob.deadline}</div>
-              <div><strong>Location:</strong> {viewJob.location}</div>
+              
               <div><strong>Applicants:</strong> {viewJob.applicants}</div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
@@ -474,7 +474,7 @@ export default function ManageJobPosts() {
                 <option value="Contract">Contract</option>
                 <option value="Internship">Internship</option>
               </select>
-              <input value={editJob.location} onChange={(e) => setEditJob({ ...editJob, location: e.target.value })} placeholder="Location" className="is-search-input" />
+              
               <input value={editJob.experience} onChange={(e) => setEditJob({ ...editJob, experience: e.target.value })} placeholder="Experience" className="is-search-input" />
               <input value={editJob.deadline} onChange={(e) => setEditJob({ ...editJob, deadline: e.target.value })} placeholder="Deadline (YYYY-MM-DD)" className="is-search-input" />
               <select value={editJob.status} onChange={(e) => setEditJob({ ...editJob, status: e.target.value })} className="is-filter-select-input">

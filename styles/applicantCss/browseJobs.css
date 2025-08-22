@@ -270,19 +270,7 @@
   margin-bottom: 0.5rem;
 }
 
-.browse-job-location {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.75rem;
-  color: var(--text-muted);
-}
-
-.browse-job-location-icon {
-  width: 16px;
-  height: 16px;
-  color: var(--text-secondary);
-}
+/* location styles removed */
 
 .browse-job-details {
   display: grid;

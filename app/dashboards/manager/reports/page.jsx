@@ -35,14 +35,6 @@ const mockReportData = {
 };
 
 const mockChartData = {
-  applicationsByMonth: [
-    { month: "Jan", count: 15 },
-    { month: "Feb", count: 18 },
-    { month: "Mar", count: 22 },
-    { month: "Apr", count: 19 },
-    { month: "May", count: 25 },
-    { month: "Jun", count: 23 },
-  ],
   applicationsByPosition: [
     { position: "Frontend Developer", count: 45 },
     { position: "Backend Engineer", count: 32 },
@@ -67,6 +59,42 @@ export default function Reports() {
   const [isGeneratingReport, setIsGeneratingReport] = useState(false);
   const toast = useToastNotifications();
   const { metrics, trackInteraction, updateRenderMetrics } = usePerformance("Reports");
+
+  const getPeriodMultiplier = (period) => {
+    switch (period) {
+      case "week":
+        return 0.25; // Approximate week share of a month
+      case "month":
+        return 1;
+      case "quarter":
+        return 3;
+      case "year":
+        return 12;
+      default:
+        return 1;
+    }
+  };
+
+  const periodMultiplier = getPeriodMultiplier(selectedPeriod);
+
+  const scaledApplicationsByPosition = mockChartData.applicationsByPosition.map((d) => ({
+    position: d.position,
+    count: Math.max(0, Math.round(d.count * periodMultiplier)),
+  }));
+
+  const totalApplicationsScaled = scaledApplicationsByPosition.reduce((s, d) => s + d.count, 0);
+
+  const scaledStatusDistribution = (() => {
+    const counts = mockChartData.statusDistribution.map((d) => ({
+      status: d.status,
+      count: Math.max(0, Math.round(d.count * periodMultiplier)),
+    }));
+    const total = counts.reduce((s, d) => s + d.count, 0) || 1;
+    return counts.map((d) => ({
+      ...d,
+      percentage: Math.round((d.count / total) * 1000) / 10,
+    }));
+  })();
 
   // Simulate data loading
   useEffect(() => {
@@ -190,14 +218,14 @@ export default function Reports() {
         </div>
       </div>
 
-      {/* Stats Overview */}
+      {/* Stats Overview (responsive to period) */}
       <div className="admin-stats-grid">
         <div className="admin-stat-card primary">
           <div className="admin-stat-header">
             <div className="admin-stat-title">Total Applications</div>
             <div className="admin-stat-icon">📋</div>
           </div>
-          <div className="admin-stat-number">{mockReportData.applications.total}</div>
+          <div className="admin-stat-number">{selectedPeriod === 'month' ? mockReportData.applications.total : totalApplicationsScaled}</div>
           <div className="admin-stat-change positive">{mockReportData.applications.growth}</div>
         </div>
         <div className="admin-stat-card success">
@@ -272,28 +300,15 @@ export default function Reports() {
         </div>
       </div>
 
-      {/* Applications by Month Chart */}
-      <div className="admin-recent-activity">
-        <div className="admin-activity-header">
-          <h2 className="admin-activity-title">Applications by Month</h2>
-        </div>
-        <div style={{ padding: '2rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '1rem' }}>
-          {mockChartData.applicationsByMonth.map((data) => (
-            <div key={data.month} style={{ textAlign: 'center', padding: '1rem', background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
-              <div style={{ fontSize: '1.25rem', fontWeight: '700', color: '#1e293b', marginBottom: '0.25rem' }}>{data.count}</div>
-              <div style={{ fontSize: '0.875rem', color: '#64748b' }}>{data.month}</div>
-            </div>
-          ))}
-        </div>
-      </div>
+      
 
-      {/* Applications by Position */}
+      {/* Applications by Position (filtered by period) */}
       <div className="admin-recent-activity">
         <div className="admin-activity-header">
           <h2 className="admin-activity-title">Applications by Position</h2>
         </div>
         <div style={{ padding: '2rem' }}>
-          {mockChartData.applicationsByPosition.map((data) => (
+          {scaledApplicationsByPosition.map((data) => (
             <div key={data.position} style={{ marginBottom: '1rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
                 <span style={{ fontWeight: '600', color: '#1e293b' }}>{data.position}</span>
@@ -307,7 +322,7 @@ export default function Reports() {
                 overflow: 'hidden'
               }}>
                 <div style={{ 
-                  width: `${(data.count / Math.max(...mockChartData.applicationsByPosition.map(d => d.count))) * 100}%`, 
+                  width: `${(data.count / Math.max(...scaledApplicationsByPosition.map(d => d.count))) * 100}%`, 
                   height: '100%', 
                   background: 'linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%)',
                   borderRadius: '4px'
@@ -318,13 +333,13 @@ export default function Reports() {
         </div>
       </div>
 
-      {/* Status Distribution */}
+      {/* Status Distribution (filtered by period) */}
       <div className="admin-recent-activity">
         <div className="admin-activity-header">
           <h2 className="admin-activity-title">Application Status Distribution</h2>
         </div>
         <div style={{ padding: '2rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
-          {mockChartData.statusDistribution.map((data) => (
+          {scaledStatusDistribution.map((data) => (
             <div key={data.status} style={{ textAlign: 'center', padding: '1.5rem', background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
               <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
                 {data.status === "Under Review" && "🔍"}

@@ -180,6 +180,38 @@
   box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
 }
 
+/* Button variants for actions used across tables */
+.is-button.primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #ffffff;
+}
+
+.is-button.warning {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: #1f2937;
+}
+
+.is-button.danger {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #ffffff;
+}
+
+/* Small size utility for dense action columns */
+.is-button.small {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+/* Generic action-buttons layout, can be overridden in page-specific CSS */
+.is-action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
 .is-button-icon {
   font-size: 1.25rem;
 }
@@ -419,6 +451,19 @@
   border-color: #a7f3d0;
 }
 
+/* High-contrast variants for better readability */
+.is-status-tag.warning {
+  background: #fef3c7;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+.is-status-tag.danger {
+  background: #fee2e2;
+  color: #991b1b;
+  border-color: #fecaca;
+}
+
 .is-status-tag.rescheduled {
   background: #fef3c7;
   color: #92400e;
@@ -435,6 +480,26 @@
   background: #fee2e2;
   color: #991b1b;
   border-color: #fecaca;
+}
+
+/* High-contrast info tag used for applicants count */
+.is-status-tag.info {
+  background: #e0f2fe;
+  color: #075985;
+  border-color: #bae6fd;
+}
+
+/* Role badges (for Users table) */
+.is-status-tag.primary {
+  background: #e0e7ff;
+  color: #3730a3;
+  border-color: #c7d2fe;
+}
+
+.is-status-tag.success {
+  background: #d1fae5;
+  color: #065f46;
+  border-color: #a7f3d0;
 }
 
 /* Enhanced Calendar View */

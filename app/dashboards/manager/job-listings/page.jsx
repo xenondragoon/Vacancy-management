@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { LoadingSpinner, SkeletonTable } from "../../../../components/LoadingSpinner";
-import { EmptyState } from "../../../../components/EmptyState";
+import { EmptySearchResults } from "../../../../components/EmptyState";
 import { useToastNotifications } from "../../../../components/Toast";
 import { usePerformance } from "../../../../lib/usePerformance";
 import "../../../../styles/adminCss/interviewScheduler.css";
@@ -15,7 +16,6 @@ const mockJobListings = [
     id: 1,
     title: "Frontend Developer",
     department: "Engineering",
-    location: "New York, NY",
     type: "Full-time",
     status: "Active",
     applications: 12,
@@ -28,7 +28,6 @@ const mockJobListings = [
     id: 2,
     title: "Backend Engineer",
     department: "Engineering",
-    location: "San Francisco, CA",
     type: "Full-time",
     status: "Active",
     applications: 8,
@@ -41,7 +40,6 @@ const mockJobListings = [
     id: 3,
     title: "UI/UX Designer",
     department: "Design",
-    location: "Remote",
     type: "Contract",
     status: "Draft",
     applications: 0,
@@ -54,7 +52,6 @@ const mockJobListings = [
     id: 4,
     title: "Product Manager",
     department: "Product",
-    location: "Boston, MA",
     type: "Full-time",
     status: "Closed",
     applications: 25,
@@ -67,7 +64,6 @@ const mockJobListings = [
     id: 5,
     title: "Data Scientist",
     department: "Analytics",
-    location: "Austin, TX",
     type: "Full-time",
     status: "Active",
     applications: 15,
@@ -78,8 +74,8 @@ const mockJobListings = [
   }
 ];
 
-const getStatusCount = (status) => {
-  return mockJobListings.filter(job => job.status === status).length;
+const getStatusCount = (list, status) => {
+  return list.filter(job => job.status === status).length;
 };
 
 const getStatusClass = (status) => {
@@ -98,11 +94,13 @@ const getStatusClass = (status) => {
 };
 
 export default function JobListings() {
+  const router = useRouter();
   const [jobListings, setJobListings] = useState(mockJobListings);
   const [selectedStatus, setSelectedStatus] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [editJob, setEditJob] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const toast = useToastNotifications();
@@ -152,37 +150,28 @@ export default function JobListings() {
     }
   };
 
-  const handleEditJob = async (job) => {
+  const handleEditJob = (job) => {
     trackInteraction('edit-job');
-    try {
-      // Simulate action processing
-      await new Promise(resolve => setTimeout(resolve, 600));
-      toast.showSuccess(`Editing job: ${job.title}`);
-    } catch (error) {
-      toast.showError("Failed to edit job");
-    }
+    setEditJob({ ...job });
   };
 
   const handleDeleteJob = async (job) => {
     trackInteraction('delete-job');
     try {
-      // Simulate action processing
-      await new Promise(resolve => setTimeout(resolve, 700));
+      const confirmed = window.confirm(`Delete job "${job.title}"?`);
+      if (!confirmed) return;
+      await new Promise(resolve => setTimeout(resolve, 250));
+      setJobListings(prev => prev.filter(j => j.id !== job.id));
       toast.showSuccess(`Job deleted: ${job.title}`);
     } catch (error) {
       toast.showError("Failed to delete job");
     }
   };
 
-  const handleViewApplications = async (job) => {
+  const handleViewApplications = (job) => {
     trackInteraction('view-applications');
-    try {
-      // Simulate action processing
-      await new Promise(resolve => setTimeout(resolve, 500));
-      toast.showInfo(`Viewing applications for: ${job.title}`);
-    } catch (error) {
-      toast.showError("Failed to view applications");
-    }
+    const position = encodeURIComponent(job.title);
+    router.push(`/dashboards/manager/Applicants?position=${position}`);
   };
 
   const filteredJobListings = jobListings.filter(
@@ -256,7 +245,7 @@ export default function JobListings() {
             <div className="admin-stat-title">Active Jobs</div>
             <div className="admin-stat-icon">✅</div>
           </div>
-          <div className="admin-stat-number">{getStatusCount("Active")}</div>
+          <div className="admin-stat-number">{getStatusCount(jobListings, "Active")}</div>
           <div className="admin-stat-change positive">+1 today</div>
         </div>
         <div className="admin-stat-card warning">
@@ -264,7 +253,7 @@ export default function JobListings() {
             <div className="admin-stat-title">Draft Jobs</div>
             <div className="admin-stat-icon">📝</div>
           </div>
-          <div className="admin-stat-number">{getStatusCount("Draft")}</div>
+          <div className="admin-stat-number">{getStatusCount(jobListings, "Draft")}</div>
           <div className="admin-stat-change neutral">0 changes</div>
         </div>
         <div className="admin-stat-card info">
@@ -347,7 +336,6 @@ export default function JobListings() {
                 <tr>
                   <th>Job Title</th>
                   <th>Department</th>
-                  <th>Location</th>
                   <th>Type</th>
                   <th>Applications</th>
                   <th>Deadline</th>
@@ -365,7 +353,6 @@ export default function JobListings() {
                       </div>
                     </td>
                     <td>{job.department}</td>
-                    <td>{job.location}</td>
                     <td>{job.type}</td>
                     <td>
                       <span className="is-status-tag info">{job.applications} applicants</span>
@@ -452,11 +439,6 @@ export default function JobListings() {
                 <option value="Product">Product</option>
                 <option value="Analytics">Analytics</option>
               </select>
-              <input
-                type="text"
-                placeholder="Location"
-                className="is-search-input"
-              />
               <select className="is-filter-select-input">
                 <option value="">Job Type</option>
                 <option value="Full-time">Full-time</option>
@@ -502,6 +484,52 @@ export default function JobListings() {
               >
                 Create Job
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Job Modal */}
+      {editJob && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
+          <div style={{ background: 'white', padding: '2rem', borderRadius: '16px', width: '90%', maxWidth: '700px', maxHeight: '85vh', overflow: 'auto' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <h2 style={{ fontSize: '1.5rem', fontWeight: 700 }}>Edit Job</h2>
+              <button onClick={() => setEditJob(null)} style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer' }}>✕</button>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <input value={editJob.title} onChange={(e) => setEditJob({ ...editJob, title: e.target.value })} placeholder="Job Title" className="is-search-input" />
+              <select value={editJob.department} onChange={(e) => setEditJob({ ...editJob, department: e.target.value })} className="is-filter-select-input">
+                <option value="Engineering">Engineering</option>
+                <option value="Design">Design</option>
+                <option value="Product">Product</option>
+                <option value="Analytics">Analytics</option>
+                <option value="Marketing">Marketing</option>
+              </select>
+              {/* Location field removed as requested */}
+              <select value={editJob.type} onChange={(e) => setEditJob({ ...editJob, type: e.target.value })} className="is-filter-select-input">
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Contract">Contract</option>
+                <option value="Internship">Internship</option>
+              </select>
+              <input value={editJob.salary} onChange={(e) => setEditJob({ ...editJob, salary: e.target.value })} placeholder="Salary Range" className="is-search-input" />
+              <input value={editJob.experience} onChange={(e) => setEditJob({ ...editJob, experience: e.target.value })} placeholder="Experience" className="is-search-input" />
+              <input type="date" value={editJob.deadline} onChange={(e) => setEditJob({ ...editJob, deadline: e.target.value })} className="is-search-input" />
+              <select value={editJob.status} onChange={(e) => setEditJob({ ...editJob, status: e.target.value })} className="is-filter-select-input">
+                <option value="Active">Active</option>
+                <option value="Draft">Draft</option>
+                <option value="Closed">Closed</option>
+                <option value="Pending">Pending</option>
+              </select>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.25rem' }}>
+              <button className="is-button secondary" onClick={() => setEditJob(null)}>Cancel</button>
+              <button className="is-button" onClick={() => {
+                setJobListings(prev => prev.map(j => j.id === editJob.id ? { ...j, ...editJob } : j));
+                toast.showSuccess(`Updated job: ${editJob.title}`);
+                setEditJob(null);
+              }}>Save</button>
             </div>
           </div>
         </div>

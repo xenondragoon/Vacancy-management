@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { LoadingSpinner, SkeletonTable } from "../../../../components/LoadingSpinner";
-import { EmptyState } from "../../../../components/EmptyState";
+import { EmptySearchResults } from "../../../../components/EmptyState";
 import { useToastNotifications } from "../../../../components/Toast";
 import { usePerformance } from "../../../../lib/usePerformance";
 import "../../../../styles/adminCss/interviewScheduler.css";
@@ -23,7 +23,7 @@ const mockInterviews = [
     status: "Scheduled",
     interviewer: "Sarah Manager",
     type: "Technical",
-    location: "Conference Room A",
+    
   },
   {
     id: 2,
@@ -37,7 +37,7 @@ const mockInterviews = [
     status: "Pending",
     interviewer: "Mike Tech Lead",
     type: "Technical",
-    location: "Zoom Meeting",
+    
   },
   {
     id: 3,
@@ -51,7 +51,7 @@ const mockInterviews = [
     status: "Scheduled",
     interviewer: "Lisa Designer",
     type: "Portfolio Review",
-    location: "Design Lab",
+    
   },
   {
     id: 4,
@@ -65,7 +65,7 @@ const mockInterviews = [
     status: "Rescheduled",
     interviewer: "John Product Lead",
     type: "Case Study",
-    location: "Board Room",
+    
   },
   {
     id: 5,
@@ -79,12 +79,12 @@ const mockInterviews = [
     status: "Scheduled",
     interviewer: "Alex Data Lead",
     type: "Technical",
-    location: "Data Center",
+    
   },
 ];
 
-const getStatusCount = (status) => {
-  return mockInterviews.filter(interview => interview.status === status).length;
+const getStatusCount = (list, status) => {
+  return list.filter(interview => interview.status === status).length;
 };
 
 const getStatusClass = (status) => {
@@ -108,9 +108,11 @@ export default function InterviewScheduler() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
-  const [selectedInterviewer, setSelectedInterviewer] = useState("");
+  // interviewer filter removed with column
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [interviews, setInterviews] = useState(mockInterviews);
+  const [reschedule, setReschedule] = useState(null);
   const toast = useToastNotifications();
   const { metrics, trackInteraction, updateRenderMetrics } = usePerformance("InterviewScheduler");
 
@@ -149,23 +151,31 @@ export default function InterviewScheduler() {
   const handleInterviewAction = async (action, interview) => {
     trackInteraction('interview-action');
     try {
-      // Simulate action processing
-      await new Promise(resolve => setTimeout(resolve, 600));
-      toast.showSuccess(`${action} for ${interview.applicant} completed successfully`);
+      if (action === 'reschedule') {
+        setReschedule({ id: interview.id, date: interview.date, time: interview.time });
+        return;
+      }
+      if (action === 'cancel') {
+        const confirmed = window.confirm(`Cancel interview for ${interview.applicant}?`);
+        if (!confirmed) return;
+        setInterviews(prev => prev.map(i => i.id === interview.id ? { ...i, status: 'Cancelled' } : i));
+        toast.showSuccess(`Interview cancelled for ${interview.applicant}`);
+        return;
+      }
+      await new Promise(resolve => setTimeout(resolve, 300));
+      toast.showInfo(`${action} for ${interview.applicant}`);
     } catch (error) {
       toast.showError(`Failed to ${action} for ${interview.applicant}`);
     }
   };
 
-  const filteredInterviews = mockInterviews.filter((interview) => {
+  const filteredInterviews = interviews.filter((interview) => {
     const matchesSearch = interview.applicant.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          interview.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          interview.jobTitle.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = !selectedStatus || interview.status === selectedStatus;
     const matchesDate = !selectedDate || interview.date === selectedDate;
-    const matchesInterviewer = !selectedInterviewer || interview.interviewer === selectedInterviewer;
-    
-    return matchesSearch && matchesStatus && matchesDate && matchesInterviewer;
+    return matchesSearch && matchesStatus && matchesDate;
   });
 
   // Show loading state
@@ -216,7 +226,7 @@ export default function InterviewScheduler() {
             <div className="admin-stat-title">Total Interviews</div>
             <div className="admin-stat-icon">📅</div>
           </div>
-          <div className="admin-stat-number">{mockInterviews.length}</div>
+          <div className="admin-stat-number">{interviews.length}</div>
           <div className="admin-stat-change positive">+2 this week</div>
         </div>
         <div className="admin-stat-card success">
@@ -224,7 +234,7 @@ export default function InterviewScheduler() {
             <div className="admin-stat-title">Scheduled</div>
             <div className="admin-stat-icon">✅</div>
           </div>
-          <div className="admin-stat-number">{getStatusCount("Scheduled")}</div>
+          <div className="admin-stat-number">{getStatusCount(interviews, "Scheduled")}</div>
           <div className="admin-stat-change positive">+1 today</div>
         </div>
         <div className="admin-stat-card warning">
@@ -232,7 +242,7 @@ export default function InterviewScheduler() {
             <div className="admin-stat-title">Pending</div>
             <div className="admin-stat-icon">⏳</div>
           </div>
-          <div className="admin-stat-number">{getStatusCount("Pending")}</div>
+          <div className="admin-stat-number">{getStatusCount(interviews, "Pending")}</div>
           <div className="admin-stat-change neutral">0 changes</div>
         </div>
         <div className="admin-stat-card danger">
@@ -240,7 +250,7 @@ export default function InterviewScheduler() {
             <div className="admin-stat-title">Rescheduled</div>
             <div className="admin-stat-icon">🔄</div>
           </div>
-          <div className="admin-stat-number">{getStatusCount("Rescheduled")}</div>
+          <div className="admin-stat-number">{getStatusCount(interviews, "Rescheduled")}</div>
           <div className="admin-stat-change negative">+1 today</div>
         </div>
       </div>
@@ -288,20 +298,7 @@ export default function InterviewScheduler() {
               <option value="2024-01-19">Jan 19, 2024</option>
             </select>
           </div>
-          <div className="is-filter-select">
-            <select
-              value={selectedInterviewer}
-              onChange={(e) => setSelectedInterviewer(e.target.value)}
-              className="is-filter-select-input"
-            >
-              <option value="">All Interviewers</option>
-              <option value="Sarah Manager">Sarah Manager</option>
-              <option value="Mike Tech Lead">Mike Tech Lead</option>
-              <option value="Lisa Designer">Lisa Designer</option>
-              <option value="John Product Lead">John Product Lead</option>
-              <option value="Alex Data Lead">Alex Data Lead</option>
-            </select>
-          </div>
+          {/* interviewer filter removed */}
         </div>
       </div>
 
@@ -332,9 +329,7 @@ export default function InterviewScheduler() {
                   <th>Applicant</th>
                   <th>Job Title</th>
                   <th>Date & Time</th>
-                  <th>Interviewer</th>
                   <th>Type</th>
-                  <th>Location</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
@@ -360,9 +355,7 @@ export default function InterviewScheduler() {
                         <div className="is-table-cell-secondary">{interview.time} ({interview.duration})</div>
                       </div>
                     </td>
-                    <td>{interview.interviewer}</td>
                     <td>{interview.type}</td>
-                    <td>{interview.location}</td>
                     <td>
                       <span className={`is-status-tag ${getStatusClass(interview.status)}`}>
                         {interview.status}
@@ -430,6 +423,36 @@ export default function InterviewScheduler() {
           </div>
         </div>
       </div>
+
+      {/* Reschedule Modal */}
+      {reschedule && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
+          <div style={{ background: 'white', padding: '2rem', borderRadius: '16px', width: '90%', maxWidth: '560px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Reschedule Interview</h2>
+              <button onClick={() => setReschedule(null)} style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer' }}>✕</button>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.875rem', marginBottom: '0.25rem' }}>New Date</label>
+                <input className="is-search-input" type="date" value={reschedule.date} onChange={(e) => setReschedule(prev => ({ ...prev, date: e.target.value }))} />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.875rem', marginBottom: '0.25rem' }}>New Time</label>
+                <input className="is-search-input" type="time" value={reschedule.time} onChange={(e) => setReschedule(prev => ({ ...prev, time: e.target.value }))} />
+              </div>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.25rem' }}>
+              <button className="is-button secondary" onClick={() => setReschedule(null)}>Cancel</button>
+              <button className="is-button" onClick={() => {
+                setInterviews(prev => prev.map(i => i.id === reschedule.id ? { ...i, date: reschedule.date, time: reschedule.time, status: 'Rescheduled' } : i));
+                toast.showSuccess('Interview rescheduled');
+                setReschedule(null);
+              }}>Save</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 } 

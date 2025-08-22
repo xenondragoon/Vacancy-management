@@ -16,7 +16,7 @@ const mockJobs = [
     id: 1,
     title: "Frontend Developer",
     company: COMPANY_NAME,
-    location: "New York, NY",
+    
     type: "Full-time",
     salary: "$80,000 - $100,000",
     description: "We are looking for a skilled Frontend Developer to join our team and help build amazing user experiences. You'll work with modern technologies like React, TypeScript, and CSS-in-JS.",
@@ -29,7 +29,7 @@ const mockJobs = [
     id: 2,
     title: "Backend Engineer",
     company: COMPANY_NAME,
-    location: "San Francisco, CA",
+    
     type: "Full-time",
     salary: "$90,000 - $120,000",
     description: "Join our growing team as a Backend Engineer and help scale our infrastructure. You'll work with cutting-edge technologies and have a real impact on our product.",
@@ -42,7 +42,7 @@ const mockJobs = [
     id: 3,
     title: "UI/UX Designer",
     company: COMPANY_NAME,
-    location: "Remote",
+    
     type: "Contract",
     salary: "$60,000 - $80,000",
     description: "Creative UI/UX Designer needed for exciting projects. You'll work on user research, wireframing, prototyping, and creating beautiful, functional designs.",
@@ -55,7 +55,7 @@ const mockJobs = [
     id: 4,
     title: "Product Manager",
     company: COMPANY_NAME,
-    location: "Austin, TX",
+    
     type: "Full-time",
     salary: "$100,000 - $140,000",
     description: "Lead product strategy and execution for our innovative products. You'll work closely with engineering, design, and business teams to deliver exceptional user experiences.",
@@ -68,7 +68,7 @@ const mockJobs = [
     id: 5,
     title: "Data Analyst",
     company: COMPANY_NAME,
-    location: "Boston, MA",
+    
     type: "Full-time",
     salary: "$70,000 - $90,000",
     description: "Transform raw data into actionable insights. You'll work with large datasets, create visualizations, and help drive data-informed decisions across the organization.",
@@ -82,7 +82,7 @@ const mockJobs = [
 export default function BrowseJobs() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedType, setSelectedType] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState("");
+  
   const [selectedExperience, setSelectedExperience] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -116,19 +116,18 @@ export default function BrowseJobs() {
                            job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            job.description.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesType = !selectedType || job.type === selectedType;
-      const matchesLocation = !selectedLocation || job.location.includes(selectedLocation);
       const matchesExperience = !selectedExperience || job.experience === selectedExperience;
       
-      return matchesSearch && matchesType && matchesLocation && matchesExperience;
+      return matchesSearch && matchesType && matchesExperience;
     });
-  }, [searchTerm, selectedType, selectedLocation, selectedExperience]);
+  }, [searchTerm, selectedType, selectedExperience]);
 
   // Memoized stats for better performance
   const stats = useMemo(() => ({
     totalJobs: mockJobs.length,
     fullTimeJobs: mockJobs.filter(job => job.type === "Full-time").length,
     contractJobs: mockJobs.filter(job => job.type === "Contract").length,
-    remoteJobs: mockJobs.filter(job => job.location.includes("Remote")).length
+    remoteJobs: 0
   }), []);
 
   // Memoized handlers for better performance
@@ -203,7 +202,7 @@ export default function BrowseJobs() {
   const handleClearFilters = useCallback(() => {
     setSearchTerm("");
     setSelectedType("");
-    setSelectedLocation("");
+    
     setSelectedExperience("");
     toast.showInfo("Filters cleared");
   }, [toast]);
@@ -300,18 +299,7 @@ export default function BrowseJobs() {
             <option value="Contract">Contract</option>
             <option value="Internship">Internship</option>
           </select>
-          <select
-            value={selectedLocation}
-            onChange={(e) => setSelectedLocation(e.target.value)}
-            className="is-filter-select"
-          >
-            <option value="">All Locations</option>
-            <option value="New York">New York</option>
-            <option value="San Francisco">San Francisco</option>
-            <option value="Remote">Remote</option>
-            <option value="Austin">Austin</option>
-            <option value="Boston">Boston</option>
-          </select>
+          
           <select
             value={selectedExperience}
             onChange={(e) => setSelectedExperience(e.target.value)}
@@ -365,7 +353,7 @@ export default function BrowseJobs() {
                 </h3>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
                   <div style={{ fontWeight: '600', color: '#374151' }}>🏢 {job.company}</div>
-                  <div style={{ fontSize: '0.875rem', color: '#64748b' }}>📍 {job.location}</div>
+                  
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                   <span style={{ 

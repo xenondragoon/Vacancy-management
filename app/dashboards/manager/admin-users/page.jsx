@@ -129,6 +129,14 @@ export default function AdminUsers() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [editUser, setEditUser] = useState(null);
+  const [newUser, setNewUser] = useState({
+    name: "",
+    email: "",
+    role: "manager",
+    department: "IT",
+    status: "Active",
+  });
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const toast = useToastNotifications();
@@ -205,31 +213,58 @@ export default function AdminUsers() {
   const handleCreateUser = useCallback(async () => {
     trackInteraction('create-user');
     try {
-      // Simulate action processing
-      await new Promise(resolve => setTimeout(resolve, 800));
-      toast.showSuccess("New admin user created successfully");
+      await new Promise(resolve => setTimeout(resolve, 400));
+      setUsers(prev => {
+        const nextId = prev.length ? Math.max(...prev.map(u => u.id)) + 1 : 1;
+        const today = new Date();
+        const pad = (n) => String(n).padStart(2, '0');
+        const joinDate = `${today.getFullYear()}-${pad(today.getMonth()+1)}-${pad(today.getDate())}`;
+        return [
+          ...prev,
+          {
+            id: nextId,
+            name: newUser.name.trim(),
+            email: newUser.email.trim(),
+            role: newUser.role,
+            department: newUser.department,
+            status: newUser.status,
+            lastLogin: "—",
+            joinDate,
+          }
+        ];
+      });
+      setNewUser({ name: "", email: "", role: "manager", department: "IT", status: "Active" });
       setShowCreateForm(false);
+      toast.showSuccess("New user created successfully");
     } catch (error) {
       toast.showError("Failed to create admin user");
     }
-  }, [trackInteraction, toast]);
+  }, [trackInteraction, toast, newUser]);
 
-  const handleEditUser = useCallback(async (user) => {
+  const handleEditUser = useCallback((user) => {
     trackInteraction('edit-user');
+    setEditUser({ ...user });
+  }, [trackInteraction]);
+
+  const submitEditUser = useCallback(async () => {
+    trackInteraction('save-edit-user');
     try {
-      // Simulate action processing
-      await new Promise(resolve => setTimeout(resolve, 600));
-      toast.showSuccess(`Editing user: ${user.name}`);
+      await new Promise(resolve => setTimeout(resolve, 300));
+      setUsers(prev => prev.map(u => u.id === editUser.id ? { ...u, ...editUser } : u));
+      toast.showSuccess(`Updated user: ${editUser.name}`);
+      setEditUser(null);
     } catch (error) {
-      toast.showError("Failed to edit user");
+      toast.showError("Failed to update user");
     }
-  }, [trackInteraction, toast]);
+  }, [trackInteraction, toast, editUser]);
 
   const handleDeleteUser = useCallback(async (user) => {
     trackInteraction('delete-user');
     try {
-      // Simulate action processing
-      await new Promise(resolve => setTimeout(resolve, 700));
+      const confirmed = window.confirm(`Delete user "${user.name}"?`);
+      if (!confirmed) return;
+      await new Promise(resolve => setTimeout(resolve, 250));
+      setUsers(prev => prev.filter(u => u.id !== user.id));
       toast.showSuccess(`User deleted: ${user.name}`);
     } catch (error) {
       toast.showError("Failed to delete user");
@@ -508,26 +543,33 @@ export default function AdminUsers() {
               <input
                 type="text"
                 placeholder="Full Name"
+                value={newUser.name}
+                onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
                 className="is-search-input"
               />
               <input
                 type="email"
                 placeholder="Email Address"
+                value={newUser.email}
+                onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
                 className="is-search-input"
               />
-              <select className="is-filter-select-input">
-                <option value="">Select Role</option>
+              <select className="is-filter-select-input" value={newUser.role} onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}>
                 <option value="admin">Admin</option>
                 <option value="manager">Manager</option>
                 <option value="applicant">Applicant</option>
               </select>
-              <select className="is-filter-select-input">
-                <option value="">Select Department</option>
+              <select className="is-filter-select-input" value={newUser.department} onChange={(e) => setNewUser({ ...newUser, department: e.target.value })}>
                 <option value="IT">IT</option>
                 <option value="HR">HR</option>
                 <option value="Engineering">Engineering</option>
                 <option value="Marketing">Marketing</option>
                 <option value="Operations">Operations</option>
+              </select>
+              <select className="is-filter-select-input" value={newUser.status} onChange={(e) => setNewUser({ ...newUser, status: e.target.value })}>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+                <option value="Suspended">Suspended</option>
               </select>
             </div>
             
@@ -541,6 +583,7 @@ export default function AdminUsers() {
               <button
                 onClick={handleCreateUser}
                 className="is-button"
+                disabled={!newUser.name || !newUser.email}
               >
                 Create User
               </button>
@@ -630,6 +673,67 @@ export default function AdminUsers() {
               >
                 Edit User
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit User Modal */}
+      {editUser && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000
+        }}>
+          <div style={{
+            background: 'white',
+            padding: '2rem',
+            borderRadius: '16px',
+            width: '90%',
+            maxWidth: '600px',
+            maxHeight: '80vh',
+            overflow: 'auto'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+              <h2 style={{ fontSize: '1.5rem', fontWeight: '600' }}>Edit User</h2>
+              <button
+                onClick={() => setEditUser(null)}
+                style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer' }}
+              >
+                ✕
+              </button>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+              <input type="text" className="is-search-input" value={editUser.name} onChange={(e) => setEditUser({ ...editUser, name: e.target.value })} />
+              <input type="email" className="is-search-input" value={editUser.email} onChange={(e) => setEditUser({ ...editUser, email: e.target.value })} />
+              <select className="is-filter-select-input" value={editUser.role} onChange={(e) => setEditUser({ ...editUser, role: e.target.value })}>
+                <option value="admin">Admin</option>
+                <option value="manager">Manager</option>
+                <option value="applicant">Applicant</option>
+              </select>
+              <select className="is-filter-select-input" value={editUser.department} onChange={(e) => setEditUser({ ...editUser, department: e.target.value })}>
+                <option value="IT">IT</option>
+                <option value="HR">HR</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Operations">Operations</option>
+              </select>
+              <select className="is-filter-select-input" value={editUser.status} onChange={(e) => setEditUser({ ...editUser, status: e.target.value })}>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+                <option value="Suspended">Suspended</option>
+              </select>
+            </div>
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+              <button onClick={() => setEditUser(null)} className="is-button secondary">Cancel</button>
+              <button onClick={submitEditUser} className="is-button">Save</button>
             </div>
           </div>
         </div>

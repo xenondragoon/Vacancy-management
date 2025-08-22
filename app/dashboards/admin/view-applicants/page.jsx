@@ -1,8 +1,9 @@
 "use client"
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { LoadingSpinner, SkeletonTable } from "../../../../components/LoadingSpinner";
-import { EmptyState } from "../../../../components/EmptyState";
+import { EmptySearchResults } from "../../../../components/EmptyState";
 import { useToastNotifications } from "../../../../components/Toast";
 import { usePerformance } from "../../../../lib/usePerformance";
 import "../../../../styles/adminCss/interviewScheduler.css";
@@ -85,8 +86,8 @@ const mockApplicants = [
   }
 ];
 
-const getStatusCount = (status) => {
-  return mockApplicants.filter(app => app.status === status).length;
+const getStatusCount = (list, status) => {
+  return list.filter(app => app.status === status).length;
 };
 
 const getStatusClass = (status) => {
@@ -105,11 +106,14 @@ const getStatusClass = (status) => {
 };
 
 export default function ViewApplicants() {
+  const router = useRouter();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [jobFilter, setJobFilter] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [applicants, setApplicants] = useState(mockApplicants);
+  const [viewApplicant, setViewApplicant] = useState(null);
   const toast = useToastNotifications();
   const { metrics, trackInteraction, updateRenderMetrics } = usePerformance("ViewApplicants");
 
@@ -148,22 +152,51 @@ export default function ViewApplicants() {
   const handleApplicantAction = async (action, applicant) => {
     trackInteraction('applicant-action');
     try {
-      // Simulate action processing
-      await new Promise(resolve => setTimeout(resolve, 700));
+      if (action === 'view') {
+        setViewApplicant(applicant);
+        return;
+      }
+
+      if (action === 'shortlist') {
+        await new Promise(resolve => setTimeout(resolve, 250));
+        setApplicants(prev => prev.map(a => a.id === applicant.id ? { ...a, status: 'Shortlisted' } : a));
+        toast.showSuccess(`${applicant.name} shortlisted`);
+        return;
+      }
+
+      if (action === 'reject') {
+        await new Promise(resolve => setTimeout(resolve, 250));
+        setApplicants(prev => prev.map(a => a.id === applicant.id ? { ...a, status: 'Rejected' } : a));
+        toast.showInfo(`${applicant.name} rejected`);
+        return;
+      }
+
+      if (action === 'schedule interview' || action === 'interview') {
+        const applicantName = encodeURIComponent(applicant.name);
+        const jobTitle = encodeURIComponent(applicant.jobTitle || '');
+        router.push(`/dashboards/admin/interview-scheduler?applicant=${applicantName}&job=${jobTitle}`);
+        return;
+      }
+
+      // Fallback simulated action
+      await new Promise(resolve => setTimeout(resolve, 400));
       toast.showSuccess(`${action} for ${applicant.name} completed successfully`);
     } catch (error) {
       toast.showError(`Failed to ${action} for ${applicant.name}`);
     }
   };
 
-  const filteredApplicants = mockApplicants.filter(
-    (applicant) =>
-      applicant.name.toLowerCase().includes(search.toLowerCase()) ||
-      applicant.email.toLowerCase().includes(search.toLowerCase()) ||
-      applicant.jobTitle.toLowerCase().includes(search.toLowerCase()) &&
-      (statusFilter ? applicant.status === statusFilter : true) &&
-      (jobFilter ? applicant.jobTitle === jobFilter : true)
-  );
+  const filteredApplicants = applicants.filter((applicant) => {
+    const lower = search.toLowerCase();
+    const matchesSearch = (
+      applicant.name.toLowerCase().includes(lower) ||
+      applicant.email.toLowerCase().includes(lower) ||
+      (applicant.jobTitle || "").toLowerCase().includes(lower)
+    );
+    const matchesStatus = statusFilter ? applicant.status === statusFilter : true;
+    const matchesJob = jobFilter ? applicant.jobTitle === jobFilter : true;
+    return matchesSearch && matchesStatus && matchesJob;
+  });
 
   // Show loading state
   if (isLoading) {
@@ -213,7 +246,7 @@ export default function ViewApplicants() {
             <div className="admin-stat-title">Total Applicants</div>
             <div className="admin-stat-icon">👥</div>
           </div>
-          <div className="admin-stat-number">{mockApplicants.length}</div>
+          <div className="admin-stat-number">{applicants.length}</div>
           <div className="admin-stat-change positive">+3 this week</div>
         </div>
         <div className="admin-stat-card warning">
@@ -221,7 +254,7 @@ export default function ViewApplicants() {
             <div className="admin-stat-title">New Applications</div>
             <div className="admin-stat-icon">🆕</div>
           </div>
-          <div className="admin-stat-number">{getStatusCount("New")}</div>
+          <div className="admin-stat-number">{getStatusCount(applicants, "New")}</div>
           <div className="admin-stat-change positive">+2 today</div>
         </div>
         <div className="admin-stat-card success">
@@ -229,7 +262,7 @@ export default function ViewApplicants() {
             <div className="admin-stat-title">Shortlisted</div>
             <div className="admin-stat-icon">✅</div>
           </div>
-          <div className="admin-stat-number">{getStatusCount("Shortlisted")}</div>
+          <div className="admin-stat-number">{getStatusCount(applicants, "Shortlisted")}</div>
           <div className="admin-stat-change positive">+1 today</div>
         </div>
         <div className="admin-stat-card info">
@@ -237,7 +270,7 @@ export default function ViewApplicants() {
             <div className="admin-stat-title">In Interview</div>
             <div className="admin-stat-icon">📅</div>
           </div>
-          <div className="admin-stat-number">{getStatusCount("Interview")}</div>
+          <div className="admin-stat-number">{getStatusCount(applicants, "Interview")}</div>
           <div className="admin-stat-change neutral">0 changes</div>
         </div>
       </div>
@@ -401,6 +434,12 @@ export default function ViewApplicants() {
                         >
                           Interview
                         </button>
+                        <button
+                          onClick={() => handleApplicantAction("reject", applicant)}
+                          className="is-button danger small"
+                        >
+                          Reject
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -449,6 +488,34 @@ export default function ViewApplicants() {
           </div>
         </div>
       </div>
+      {/* View Applicant Modal */}
+      {viewApplicant && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
+          <div style={{ background: 'white', padding: '2rem', borderRadius: '16px', width: '90%', maxWidth: '720px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <h2 style={{ fontSize: '1.5rem', fontWeight: 700 }}>Applicant Details</h2>
+              <button onClick={() => setViewApplicant(null)} style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer' }}>✕</button>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+              <div><strong>Name:</strong> {viewApplicant.name}</div>
+              <div><strong>Email:</strong> {viewApplicant.email}</div>
+              <div><strong>Job Title:</strong> {viewApplicant.jobTitle}</div>
+              <div><strong>Applied:</strong> {viewApplicant.appliedDate}</div>
+              <div><strong>Experience:</strong> {viewApplicant.experience}</div>
+              <div><strong>Status:</strong> {viewApplicant.status}</div>
+              <div style={{ gridColumn: '1 / -1' }}>
+                <strong>Skills:</strong> {Array.isArray(viewApplicant.skills) ? viewApplicant.skills.join(', ') : ''}
+              </div>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.25rem' }}>
+              <button className="is-button secondary" onClick={() => setViewApplicant(null)}>Close</button>
+              <button className="is-button warning" onClick={() => { setViewApplicant(null); handleApplicantAction('schedule interview', viewApplicant); }}>Schedule Interview</button>
+              <button className="is-button" onClick={() => { setViewApplicant(null); handleApplicantAction('shortlist', viewApplicant); }}>Shortlist</button>
+              <button className="is-button danger" onClick={() => { setViewApplicant(null); handleApplicantAction('reject', viewApplicant); }}>Reject</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 } 

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { LoadingSpinner, SkeletonTable } from "../../../../components/LoadingSpinner";
 import { EmptyState } from "../../../../components/EmptyState";
 import { useToastNotifications } from "../../../../components/Toast";
@@ -93,6 +94,7 @@ const getStatusClass = (status) => {
 };
 
 export default function Applicants() {
+  const router = useRouter();
   const [applicants, setApplicants] = useState(mockApplicants);
   const [selectedStatus, setSelectedStatus] = useState("");
   const [selectedPosition, setSelectedPosition] = useState("");
@@ -154,33 +156,46 @@ export default function Applicants() {
   const handleViewResume = async (applicant) => {
     trackInteraction('view-resume');
     try {
-      // Simulate action processing
-      await new Promise(resolve => setTimeout(resolve, 400));
-      toast.showInfo(`Viewing resume for ${applicant.name}`);
+      await new Promise(resolve => setTimeout(resolve, 250));
+      setSelectedApplicant(applicant);
     } catch (error) {
-      toast.showError("Failed to view resume");
+      toast.showError("Failed to open resume");
     }
+  };
+
+  const handleDownloadResume = (applicant) => {
+    const content = `Resume for ${applicant.name}\nEmail: ${applicant.email}\nPhone: ${applicant.phone}\nPosition: ${applicant.position}`;
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = applicant.resume || `${applicant.name.replace(/\s+/g, '_')}_resume.txt`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    toast.showSuccess('Resume download started');
   };
 
   const handleScheduleInterview = async (applicant) => {
     trackInteraction('schedule-interview');
     try {
-      // Simulate action processing
-      await new Promise(resolve => setTimeout(resolve, 700));
-      toast.showSuccess(`Interview scheduled for ${applicant.name}`);
+      const applicantName = encodeURIComponent(applicant.name);
+      const position = encodeURIComponent(applicant.position || "");
+      router.push(`/dashboards/admin/interview-scheduler?applicant=${applicantName}&position=${position}`);
     } catch (error) {
-      toast.showError("Failed to schedule interview");
+      toast.showError("Failed to open scheduler");
     }
   };
 
   const handleSendEmail = async (applicant) => {
     trackInteraction('send-email');
     try {
-      // Simulate action processing
-      await new Promise(resolve => setTimeout(resolve, 500));
-      toast.showSuccess(`Email sent to ${applicant.name}`);
+      const subject = encodeURIComponent(`Regarding your application for ${applicant.position}`);
+      const body = encodeURIComponent(`Hi ${applicant.name},%0D%0A%0D%0A`);
+      window.location.href = `mailto:${applicant.email}?subject=${subject}&body=${body}`;
     } catch (error) {
-      toast.showError("Failed to send email");
+      toast.showError("Failed to open email client");
     }
   };
 
@@ -428,6 +443,26 @@ export default function Applicants() {
           </div>
         )}
       </div>
+
+      {/* Resume Preview Modal */}
+      {selectedApplicant && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
+          <div style={{ background: 'white', padding: '2rem', borderRadius: '16px', width: '90%', maxWidth: '720px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <h2 style={{ fontSize: '1.5rem', fontWeight: 700 }}>Resume - {selectedApplicant.name}</h2>
+              <button onClick={() => setSelectedApplicant(null)} style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer' }}>✕</button>
+            </div>
+            <div style={{ padding: '1rem', border: '1px solid #e2e8f0', borderRadius: '12px', background: '#f8fafc', color: '#475569', marginBottom: '1rem' }}>
+              File: {selectedApplicant.resume || 'resume.txt'}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
+              <button className="is-button secondary" onClick={() => setSelectedApplicant(null)}>Close</button>
+              <button className="is-button warning" onClick={() => handleScheduleInterview(selectedApplicant)}>Schedule Interview</button>
+              <button className="is-button" onClick={() => handleDownloadResume(selectedApplicant)}>Download</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Performance Metrics */}
       <div style={{ marginTop: '3rem' }}>
