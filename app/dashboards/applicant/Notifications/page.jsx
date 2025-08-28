@@ -120,7 +120,6 @@ export default function Notifications() {
   const markAsRead = useCallback(async (id) => {
     trackInteraction('mark-notification-read');
     try {
-      // Simulate action processing
       await new Promise(resolve => setTimeout(resolve, 300));
       setNotifications(prev =>
         prev.map(notification =>
@@ -150,7 +149,6 @@ export default function Notifications() {
   const deleteNotification = useCallback(async (id) => {
     trackInteraction('delete-notification');
     try {
-      // Simulate action processing
       await new Promise(resolve => setTimeout(resolve, 400));
       setNotifications(prev => prev.filter(notification => notification.id !== id));
       toast.showSuccess("Notification deleted");

@@ -7,6 +7,7 @@ import { useToastNotifications } from "../../../../components/Toast";
 import { usePerformance } from "../../../../lib/usePerformance";
 import "../../../../styles/adminCss/interviewScheduler.css";
 import "../../../../styles/adminCss/adminLayout.css";
+import "../../../../styles/components/popupModal.css";
 
 const COMPANY_NAME = "Time Software";
 
@@ -403,30 +404,34 @@ export default function ManageJobPosts() {
 
       {/* Create Job Modal */}
       {showCreateModal && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
-          <div style={{ background: 'white', padding: '2rem', borderRadius: '16px', width: '90%', maxWidth: '700px', maxHeight: '85vh', overflow: 'auto' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h2 style={{ fontSize: '1.5rem', fontWeight: 700 }}>Create Job Post</h2>
-              <button onClick={() => setShowCreateModal(false)} style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer' }}>✕</button>
+        <div className="popup-modal">
+          <div className="popup-content">
+            <div className="modal-header">
+              <h2 className="modal-title">Create Job Post</h2>
+              <button onClick={() => setShowCreateModal(false)} className="modal-close">
+                ✕
+              </button>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-              <input value={newJob.title} onChange={(e) => setNewJob({ ...newJob, title: e.target.value })} placeholder="Job Title" className="is-search-input" />
-              <select value={newJob.type} onChange={(e) => setNewJob({ ...newJob, type: e.target.value })} className="is-filter-select-input">
-                <option value="Full-time">Full-time</option>
-                <option value="Part-time">Part-time</option>
-                <option value="Contract">Contract</option>
-                <option value="Internship">Internship</option>
-              </select>
-              
-              <input value={newJob.experience} onChange={(e) => setNewJob({ ...newJob, experience: e.target.value })} placeholder="Experience (e.g., 3-5 years)" className="is-search-input" />
-              <input value={newJob.deadline} onChange={(e) => setNewJob({ ...newJob, deadline: e.target.value })} placeholder="Deadline (YYYY-MM-DD)" className="is-search-input" />
-              <select value={newJob.status} onChange={(e) => setNewJob({ ...newJob, status: e.target.value })} className="is-filter-select-input">
-                <option value="Open">Open</option>
-                <option value="Closed">Closed</option>
-                <option value="Draft">Draft</option>
-              </select>
+            <div className="modal-body">
+              <div className="modal-input-group">
+                <input value={newJob.title} onChange={(e) => setNewJob({ ...newJob, title: e.target.value })} placeholder="Job Title" className="is-search-input" />
+                <select value={newJob.type} onChange={(e) => setNewJob({ ...newJob, type: e.target.value })} className="is-filter-select-input">
+                  <option value="Full-time">Full-time</option>
+                  <option value="Part-time">Part-time</option>
+                  <option value="Contract">Contract</option>
+                  <option value="Internship">Internship</option>
+                </select>
+                
+                <input value={newJob.experience} onChange={(e) => setNewJob({ ...newJob, experience: e.target.value })} placeholder="Experience (e.g., 3-5 years)" className="is-search-input" />
+                <input value={newJob.deadline} onChange={(e) => setNewJob({ ...newJob, deadline: e.target.value })} placeholder="Deadline (YYYY-MM-DD)" className="is-search-input" />
+                <select value={newJob.status} onChange={(e) => setNewJob({ ...newJob, status: e.target.value })} className="is-filter-select-input">
+                  <option value="Open">Open</option>
+                  <option value="Closed">Closed</option>
+                  <option value="Draft">Draft</option>
+                </select>
+              </div>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.25rem' }}>
+            <div className="modal-footer">
               <button className="is-button secondary" onClick={() => setShowCreateModal(false)}>Cancel</button>
               <button className="is-button" onClick={submitCreateJob} disabled={!newJob.title || !newJob.deadline}>Create</button>
             </div>
@@ -436,22 +441,36 @@ export default function ManageJobPosts() {
 
       {/* View Job Modal */}
       {viewJob && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
-          <div style={{ background: 'white', padding: '2rem', borderRadius: '16px', width: '90%', maxWidth: '640px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h2 style={{ fontSize: '1.5rem', fontWeight: 700 }}>Job Details</h2>
-              <button onClick={() => setViewJob(null)} style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer' }}>✕</button>
+        <div className="popup-modal">
+          <div className="popup-content">
+            <div className="modal-header">
+              <h2 className="modal-title">Job Details</h2>
+              <button onClick={() => setViewJob(null)} className="modal-close">
+                ✕
+              </button>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-              <div><strong>Title:</strong> {viewJob.title}</div>
-              <div><strong>Status:</strong> {viewJob.status}</div>
-              <div><strong>Type:</strong> {viewJob.type}</div>
-              <div><strong>Experience:</strong> {viewJob.experience}</div>
-              <div><strong>Deadline:</strong> {viewJob.deadline}</div>
+            <div className="modal-body">
+              <div className="modal-detail">
+                <strong>Title:</strong> {viewJob.title}
+              </div>
+              <div className="modal-detail">
+                <strong>Status:</strong> {viewJob.status}
+              </div>
+              <div className="modal-detail">
+                <strong>Type:</strong> {viewJob.type}
+              </div>
+              <div className="modal-detail">
+                <strong>Experience:</strong> {viewJob.experience}
+              </div>
+              <div className="modal-detail">
+                <strong>Deadline:</strong> {viewJob.deadline}
+              </div>
               
-              <div><strong>Applicants:</strong> {viewJob.applicants}</div>
+              <div className="modal-detail">
+                <strong>Applicants:</strong> {viewJob.applicants}
+              </div>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
+            <div className="modal-footer">
               <button className="is-button secondary" onClick={() => setViewJob(null)}>Close</button>
             </div>
           </div>
@@ -460,30 +479,34 @@ export default function ManageJobPosts() {
 
       {/* Edit Job Modal */}
       {editJob && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
-          <div style={{ background: 'white', padding: '2rem', borderRadius: '16px', width: '90%', maxWidth: '700px', maxHeight: '85vh', overflow: 'auto' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h2 style={{ fontSize: '1.5rem', fontWeight: 700 }}>Edit Job</h2>
-              <button onClick={() => setEditJob(null)} style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer' }}>✕</button>
+        <div className="popup-modal">
+          <div className="popup-content">
+            <div className="modal-header">
+              <h2 className="modal-title">Edit Job</h2>
+              <button onClick={() => setEditJob(null)} className="modal-close">
+                ✕
+              </button>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-              <input value={editJob.title} onChange={(e) => setEditJob({ ...editJob, title: e.target.value })} placeholder="Job Title" className="is-search-input" />
-              <select value={editJob.type} onChange={(e) => setEditJob({ ...editJob, type: e.target.value })} className="is-filter-select-input">
-                <option value="Full-time">Full-time</option>
-                <option value="Part-time">Part-time</option>
-                <option value="Contract">Contract</option>
-                <option value="Internship">Internship</option>
-              </select>
-              
-              <input value={editJob.experience} onChange={(e) => setEditJob({ ...editJob, experience: e.target.value })} placeholder="Experience" className="is-search-input" />
-              <input value={editJob.deadline} onChange={(e) => setEditJob({ ...editJob, deadline: e.target.value })} placeholder="Deadline (YYYY-MM-DD)" className="is-search-input" />
-              <select value={editJob.status} onChange={(e) => setEditJob({ ...editJob, status: e.target.value })} className="is-filter-select-input">
-                <option value="Open">Open</option>
-                <option value="Closed">Closed</option>
-                <option value="Draft">Draft</option>
-              </select>
+            <div className="modal-body">
+              <div className="modal-input-group">
+                <input value={editJob.title} onChange={(e) => setEditJob({ ...editJob, title: e.target.value })} placeholder="Job Title" className="is-search-input" />
+                <select value={editJob.type} onChange={(e) => setEditJob({ ...editJob, type: e.target.value })} className="is-filter-select-input">
+                  <option value="Full-time">Full-time</option>
+                  <option value="Part-time">Part-time</option>
+                  <option value="Contract">Contract</option>
+                  <option value="Internship">Internship</option>
+                </select>
+                
+                <input value={editJob.experience} onChange={(e) => setEditJob({ ...editJob, experience: e.target.value })} placeholder="Experience" className="is-search-input" />
+                <input value={editJob.deadline} onChange={(e) => setEditJob({ ...editJob, deadline: e.target.value })} placeholder="Deadline (YYYY-MM-DD)" className="is-search-input" />
+                <select value={editJob.status} onChange={(e) => setEditJob({ ...editJob, status: e.target.value })} className="is-filter-select-input">
+                  <option value="Open">Open</option>
+                  <option value="Closed">Closed</option>
+                  <option value="Draft">Draft</option>
+                </select>
+              </div>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.25rem' }}>
+            <div className="modal-footer">
               <button className="is-button secondary" onClick={() => setEditJob(null)}>Cancel</button>
               <button className="is-button" onClick={submitEditJob} disabled={!editJob.title || !editJob.deadline}>Save</button>
             </div>
@@ -497,29 +520,29 @@ export default function ManageJobPosts() {
           <div className="admin-activity-header">
             <h2 className="admin-activity-title">Performance Metrics</h2>
           </div>
-          <div style={{ padding: '2rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
-            <div style={{ textAlign: 'center', padding: '1.5rem', background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
+            <div className="performance-metrics-grid">
+              <div className="performance-card">
               <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>⚡</div>
               <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1e293b', marginBottom: '0.25rem' }}>
                 {metrics.renderTime ? `${metrics.renderTime.toFixed(1)}ms` : 'N/A'}
               </div>
               <div style={{ fontSize: '0.875rem', color: '#64748b' }}>Render Time</div>
             </div>
-            <div style={{ textAlign: 'center', padding: '1.5rem', background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
+              <div className="performance-card">
               <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🔄</div>
               <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1e293b', marginBottom: '0.25rem' }}>
                 {metrics.renderCount || 0}
               </div>
               <div style={{ fontSize: '0.875rem', color: '#64748b' }}>Render Count</div>
             </div>
-            <div style={{ textAlign: 'center', padding: '1.5rem', background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
+              <div className="performance-card">
               <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>💾</div>
               <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1e293b', marginBottom: '0.25rem' }}>
                 {metrics.memoryUsage ? `${metrics.memoryUsage.used}MB` : 'N/A'}
               </div>
               <div style={{ fontSize: '0.875rem', color: '#64748b' }}>Memory Usage</div>
             </div>
-            <div style={{ textAlign: 'center', padding: '1.5rem', background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
+              <div className="performance-card">
               <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🎯</div>
               <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1e293b', marginBottom: '0.25rem' }}>
                 {metrics.interactionTime ? `${metrics.interactionTime.toFixed(1)}ms` : 'N/A'}
@@ -531,4 +554,4 @@ export default function ManageJobPosts() {
       </div>
     </div>
   );
-} 
+}

@@ -7,6 +7,7 @@ import { useToastNotifications } from "../../../../components/Toast";
 import { usePerformance } from "../../../../lib/usePerformance";
 import "../../../../styles/adminCss/interviewScheduler.css";
 import "../../../../styles/applicantCss/applicantLayout.css";
+import "../../../../styles/components/popupModal.css";
 
 // Memoized mock data for better performance
 const COMPANY_NAME = "Time Software";
@@ -87,6 +88,17 @@ export default function BrowseJobs() {
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [savedJobs, setSavedJobs] = useState(new Set());
+  const [applications, setApplications] = useState([]);
+  const [showApplyModal, setShowApplyModal] = useState(false);
+  const [applyJobId, setApplyJobId] = useState(null);
+  const [applyExperience, setApplyExperience] = useState("");
+  const [applySkills, setApplySkills] = useState("");
+  const [applyResume, setApplyResume] = useState(null);
+  const [sortBy, setSortBy] = useState("title");
+  const [showSavedJobsModal, setShowSavedJobsModal] = useState(false);
+  const [showJobAlertsModal, setShowJobAlertsModal] = useState(false);
+  const [alertKeywords, setAlertKeywords] = useState("");
+  const [alertFrequency, setAlertFrequency] = useState("Daily");
   const toast = useToastNotifications();
   const { metrics, trackInteraction, updateRenderMetrics } = usePerformance("BrowseJobs");
 
@@ -122,6 +134,25 @@ export default function BrowseJobs() {
     });
   }, [searchTerm, selectedType, selectedExperience]);
 
+  const sortedJobs = useMemo(() => {
+    const jobs = [...filteredJobs];
+    if (sortBy === "date") {
+      jobs.sort((a, b) => new Date(b.postedDate) - new Date(a.postedDate));
+    } else if (sortBy === "title") {
+      jobs.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (sortBy === "salary") {
+      // Extract min salary for sorting
+      jobs.sort((a, b) => {
+        const getMinSalary = (salary) => {
+          const match = salary.match(/\$(\d{1,3}(,\d{3})*)(?: - \$(\d{1,3}(,\d{3})*)|)/);
+          return match ? parseInt(match[1].replace(/,/g, ""), 10) : 0;
+        };
+        return getMinSalary(b.salary) - getMinSalary(a.salary);
+      });
+    }
+    return jobs;
+  }, [filteredJobs, sortBy]);
+
   // Memoized stats for better performance
   const stats = useMemo(() => ({
     totalJobs: mockJobs.length,
@@ -136,8 +167,13 @@ export default function BrowseJobs() {
     try {
       // Simulate application processing
       await new Promise(resolve => setTimeout(resolve, 600));
+      setApplications(prev => {
+        if (!prev.includes(jobId)) {
+          return [...prev, jobId];
+        }
+        return prev;
+      });
       toast.showSuccess("Application submitted successfully!");
-      console.log(`Applying for job ${jobId}`);
     } catch (error) {
       toast.showError("Failed to submit application");
     }
@@ -207,6 +243,48 @@ export default function BrowseJobs() {
     toast.showInfo("Filters cleared");
   }, [toast]);
 
+  const openApplyModal = (jobId) => {
+    setApplyJobId(jobId);
+    setShowApplyModal(true);
+    setApplyExperience("");
+    setApplySkills("");
+    setApplyResume(null);
+  };
+
+  const closeApplyModal = () => {
+    setShowApplyModal(false);
+    setApplyJobId(null);
+  };
+
+  const handleApplySubmit = async (e) => {
+    e.preventDefault();
+    trackInteraction('job-apply');
+    try {
+      await new Promise(resolve => setTimeout(resolve, 600));
+      setApplications(prev => {
+        if (!prev.includes(applyJobId)) {
+          return [...prev, applyJobId];
+        }
+        return prev;
+      });
+      toast.showSuccess("Application submitted successfully!");
+      closeApplyModal();
+    } catch (error) {
+      toast.showError("Failed to submit application");
+    }
+  };
+
+  const openSavedJobsModal = () => setShowSavedJobsModal(true);
+  const closeSavedJobsModal = () => setShowSavedJobsModal(false);
+  const openJobAlertsModal = () => setShowJobAlertsModal(true);
+  const closeJobAlertsModal = () => setShowJobAlertsModal(false);
+
+  const handleAlertSave = (e) => {
+    e.preventDefault();
+    toast.showSuccess("Job alert preferences saved!");
+    closeJobAlertsModal();
+  };
+
   // Show loading state
   if (isLoading) {
     return (
@@ -269,11 +347,11 @@ export default function BrowseJobs() {
         <div className="is-controls-header">
           <h2 className="is-controls-title">Job Search</h2>
           <div className="is-controls-actions">
-            <button className="is-button">
+            <button className="is-button" onClick={openSavedJobsModal}>
               <span className="is-button-icon">💾</span>
               Saved Jobs ({savedJobs.size})
             </button>
-            <button className="is-button secondary">
+            <button className="is-button secondary" onClick={openJobAlertsModal}>
               <span className="is-button-icon">📊</span>
               Job Alerts
             </button>
@@ -324,19 +402,18 @@ export default function BrowseJobs() {
             <label style={{ color: '#64748b', fontWeight: '600', marginRight: '0.5rem' }}>
               Sort by:
             </label>
-            <select className="is-filter-select">
+            <select className="is-filter-select" value={sortBy} onChange={e => setSortBy(e.target.value)}>
               <option value="date">Posted Date</option>
               <option value="title">Job Title</option>
               <option value="salary">Salary</option>
-              <option value="title">Job Title</option>
             </select>
           </div>
         </div>
       </div>
 
       {/* Jobs List */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        {filteredJobs.map((job) => (
+      <div className="jobs-list">
+        {sortedJobs.map((job) => (
           <div key={job.id} style={{
             background: 'white',
             border: '1px solid #e2e8f0',
@@ -471,11 +548,11 @@ export default function BrowseJobs() {
                 📅 Posted: {job.postedDate} • {Math.floor((new Date() - new Date(job.postedDate)) / (1000 * 60 * 60 * 24))} days ago
               </div>
               <button
-                onClick={() => handleApply(job.id)}
+                onClick={() => openApplyModal(job.id)}
                 className="is-button"
-                style={{ minWidth: 'auto', padding: '0.75rem 2rem' }}
+                disabled={applications.includes(job.id)}
               >
-                🚀 Apply Now
+                {applications.includes(job.id) ? "Applied" : "🚀 Apply Now"}
               </button>
             </div>
           </div>
@@ -546,13 +623,13 @@ export default function BrowseJobs() {
               </div>
               <div style={{ fontSize: '0.875rem', color: '#64748b' }}>Render Count</div>
             </div>
-            <div style={{ textAlign: 'center', padding: '1.5rem', background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
-              <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>💾</div>
-              <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1e293b', marginBottom: '0.25rem' }}>
-                {metrics.memoryUsage ? `${metrics.memoryUsage.used}MB` : 'N/A'}
-              </div>
-              <div style={{ fontSize: '0.875rem', color: '#64748b' }}>Memory Usage</div>
-            </div>
+           <div style={{ textAlign: 'center', padding: '1.5rem', background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
+  <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>💾</div>
+  <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1e293b', marginBottom: '0.25rem' }}>
+    {metrics.memoryUsage ? `${metrics.memoryUsage.used}MB` : 'N/A'}
+  </div>
+  <div style={{ fontSize: '0.875rem', color: '#64748b' }}>Memory Usage</div>
+</div>
             <div style={{ textAlign: 'center', padding: '1.5rem', background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
               <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🎯</div>
               <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1e293b', marginBottom: '0.25rem' }}>
@@ -563,6 +640,49 @@ export default function BrowseJobs() {
           </div>
         </div>
       </div>
+     
+
+      
+      {showApplyModal && (
+        <div className="popup-modal">
+          <form onSubmit={handleApplySubmit} className="popup-content modal-form">
+            <h2 className="modal-title">Apply for Job</h2>
+            <div className="modal-input-group">
+              <label>Experience</label>
+              <input
+                type="text"
+                value={applyExperience}
+                onChange={e => setApplyExperience(e.target.value)}
+                required
+                placeholder="e.g. 3 years as Frontend Developer"
+              />
+            </div>
+            <div className="modal-input-group">
+              <label>Skills</label>
+              <input
+                type="text"
+                value={applySkills}
+                onChange={e => setApplySkills(e.target.value)}
+                required
+                placeholder="e.g. React, JavaScript, CSS"
+              />
+            </div>
+            <div className="modal-input-group">
+              <label>Resume</label>
+              <input
+                type="file"
+                accept=".pdf,.doc,.docx"
+                onChange={e => setApplyResume(e.target.files[0])}
+                required
+              />
+            </div>
+            <div className="modal-footer">
+              <button type="button" onClick={closeApplyModal} className="is-button secondary">Cancel</button>
+              <button type="submit" className="is-button primary">Submit Application</button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   );
 }

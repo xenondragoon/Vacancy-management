@@ -7,6 +7,7 @@ import { useToastNotifications } from "../../../../components/Toast";
 import { usePerformance } from "../../../../lib/usePerformance";
 import "../../../../styles/adminCss/interviewScheduler.css";
 import "../../../../styles/applicantCss/applicantLayout.css";
+import "../../../../styles/components/popupModal.css";
 
 // Memoized mock data for better performance
 const COMPANY_NAME = "Time Software";
@@ -64,6 +65,7 @@ export default function MyApplications() {
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedApplication, setSelectedApplication] = useState(null);
+  const [applications, setApplications] = useState(mockApplications);
   const toast = useToastNotifications();
   const { metrics, trackInteraction, updateRenderMetrics } = usePerformance("MyApplications");
 
@@ -88,13 +90,13 @@ export default function MyApplications() {
 
   // Memoized filtered applications for better performance
   const filteredApplications = useMemo(() => {
-    return mockApplications.filter((app) => {
+    return applications.filter((app) => {
       const matchesStatus = !selectedStatus || app.status === selectedStatus;
       const matchesSearch = app.jobTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            app.company.toLowerCase().includes(searchTerm.toLowerCase());
       return matchesStatus && matchesSearch;
     });
-  }, [selectedStatus, searchTerm]);
+  }, [selectedStatus, searchTerm, applications]);
 
   // Memoized stats for better performance
   const stats = useMemo(() => ({
@@ -131,8 +133,8 @@ export default function MyApplications() {
   const handleWithdraw = useCallback(async (application) => {
     trackInteraction('withdraw-application');
     try {
-      // Simulate action processing
       await new Promise(resolve => setTimeout(resolve, 600));
+      setApplications(prev => prev.filter(app => app.id !== application.id));
       toast.showSuccess(`Application withdrawn for ${application.jobTitle}`);
     } catch (error) {
       toast.showError("Failed to withdraw application");
@@ -316,76 +318,51 @@ export default function MyApplications() {
 
       {/* Application Details Modal */}
       {selectedApplication && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0, 0, 0, 0.5)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 1000
-        }}>
-          <div style={{
-            background: 'white',
-            padding: '2rem',
-            borderRadius: '16px',
-            width: '90%',
-            maxWidth: '600px',
-            maxHeight: '80vh',
-            overflow: 'auto'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-              <h2 style={{ fontSize: '1.5rem', fontWeight: '600' }}>Application Details</h2>
+        <div className="popup-modal">
+          <div className="popup-content">
+            <div className="popup-header">
+              <h2 className="popup-title">Application Details</h2>
               <button
                 onClick={() => setSelectedApplication(null)}
-                style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer' }}
+                className="popup-close"
               >
                 ✕
               </button>
             </div>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <div>
-                <label style={{ fontWeight: '600', color: '#374151', marginBottom: '0.5rem', display: 'block' }}>Job Title:</label>
-                <span style={{ fontSize: '1.125rem', fontWeight: '500' }}>{selectedApplication.jobTitle}</span>
+            <div className="popup-body">
+              <div className="popup-field">
+                <label className="popup-label">Job Title:</label>
+                <span className="popup-value">{selectedApplication.jobTitle}</span>
               </div>
-              <div>
-                <label style={{ fontWeight: '600', color: '#374151', marginBottom: '0.5rem', display: 'block' }}>Company:</label>
-                <span>{selectedApplication.company}</span>
+              <div className="popup-field">
+                <label className="popup-label">Company:</label>
+                <span className="popup-value">{selectedApplication.company}</span>
               </div>
-              <div>
-                <label style={{ fontWeight: '600', color: '#374151', marginBottom: '0.5rem', display: 'block' }}>Status:</label>
+              <div className="popup-field">
+                <label className="popup-label">Status:</label>
                 <span
-                  style={{ 
-                    padding: '0.375rem 0.75rem',
-                    backgroundColor: statusColors[selectedApplication.status],
-                    color: 'white',
-                    borderRadius: '8px',
-                    fontSize: '0.875rem',
-                    fontWeight: '600'
-                  }}
+                  className="popup-status"
+                  style={{ backgroundColor: statusColors[selectedApplication.status] }}
                 >
                   {selectedApplication.status}
                 </span>
               </div>
-              <div>
-                <label style={{ fontWeight: '600', color: '#374151', marginBottom: '0.5rem', display: 'block' }}>Applied Date:</label>
-                <span>{selectedApplication.appliedDate}</span>
+              <div className="popup-field">
+                <label className="popup-label">Applied Date:</label>
+                <span className="popup-value">{selectedApplication.appliedDate}</span>
               </div>
-              <div>
-                <label style={{ fontWeight: '600', color: '#374151', marginBottom: '0.5rem', display: 'block' }}>Last Updated:</label>
-                <span>{selectedApplication.lastUpdated}</span>
+              <div className="popup-field">
+                <label className="popup-label">Last Updated:</label>
+                <span className="popup-value">{selectedApplication.lastUpdated}</span>
               </div>
-              <div>
-                <label style={{ fontWeight: '600', color: '#374151', marginBottom: '0.5rem', display: 'block' }}>Description:</label>
-                <p style={{ color: '#475569', lineHeight: '1.6' }}>{selectedApplication.description}</p>
+              <div className="popup-field">
+                <label className="popup-label">Description:</label>
+                <p className="popup-description">{selectedApplication.description}</p>
               </div>
             </div>
             
-            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
+            <div className="popup-footer">
               <button
                 onClick={() => setSelectedApplication(null)}
                 className="is-button secondary"
